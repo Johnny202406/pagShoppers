@@ -1,5 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 :root{
-  --rojo:rgb(240, 53, 53);
+  --rojo:#ed1c24;
+  --rojo-hover:#f48c74;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../public/Poppins/Poppins-Regular.ttf');
+}
+
+*{
+  font-family: 'Poppins';
 }
