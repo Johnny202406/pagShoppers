@@ -1,0 +1,13 @@
+/* app-card-product{
+    height: max-content;
+    width: max-content;
+} */
+
+
+@media  (max-width: 470px) {
+    .containerMio{
+        grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)) !important;  
+        
+    }
+}
+

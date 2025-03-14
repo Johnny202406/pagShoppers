@@ -1,9 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
-@import "tailwindcss";
-:root{
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* :root{
   --rojo:#ed1c24;
   --rojo-hover:#f48c74;
-}
+} */
 @font-face {
   font-family: 'Poppins';
   src: url('../public/Poppins/Poppins-Regular.ttf');
@@ -12,3 +15,14 @@
 *{
   font-family: 'Poppins';
 }
+@media (max-width: 639px) {
+  .cols2Card {
+    @apply grid-cols-2;
+  }
+}
+@media (max-width: 485px) {
+  .cols1Card {
+    @apply grid-cols-1;
+  }
+}
+
