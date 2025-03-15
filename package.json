@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "ng build --configuration production --base-href=https://Johnny202406.github.io/pagShoppers/ && npx angular-cli-ghpages --dir=dist/pag-shoppers"
+    "deploy": "ng build --configuration production --base-href=https://Johnny202406.github.io/pagShoppers/ && npx angular-cli-ghpages --dir=dist/pag-shoppers/browser"
   },
   "private": true,
   "dependencies": {

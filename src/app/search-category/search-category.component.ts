@@ -12,6 +12,19 @@ import { CardProductComponent } from '../card-product/card-product.component';
 export class SearchCategoryComponent implements OnInit {
   categoryId: string = '';
   seccion: string = '';
+  expandFilterFunc(e:MouseEvent){
+    const btn=e.target as HTMLElement
+    const parentFilter=btn.parentElement?.parentElement as HTMLElement
+    const svgMas=btn.querySelector('.svgMas') as HTMLElement
+    const svgMenos=btn.querySelector('.svgMenos') as HTMLElement
+    const filterSection=parentFilter.querySelector('#filter-section-mobile-0') as HTMLElement
+
+    if (parentFilter && filterSection && svgMas && svgMenos){
+      svgMas.classList.toggle('hidden')
+      svgMenos.classList.toggle('hidden')
+      filterSection.classList.toggle('hidden')
+    }
+  }
 
   constructor(private route: ActivatedRoute) {}
 

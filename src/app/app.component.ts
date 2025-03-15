@@ -5,13 +5,7 @@ import { ViewComponent } from './view/view.component';
 import { FooterComponent } from './footer/footer.component';
 import { CarritoComponent } from './carrito/carrito.component';
 
-// FLYONUI
-import { IStaticMethods } from 'flyonui/flyonui';
-declare global {
-  interface Window {
-    HSStaticMethods: IStaticMethods;
-  }
-}
+
 
 @Component({
   selector: 'app-root',
@@ -22,17 +16,7 @@ declare global {
 export class AppComponent {
   title = 'pagShoppers';
 
-  constructor(private router: Router) {}
 
-  ngOnInit() {
-    this.router.events.subscribe((event: Event) => {
-      if (event instanceof NavigationEnd) {
-        setTimeout(() => {
-          window.HSStaticMethods.autoInit();
-        }, 100);
-      }
-    });
-  }
 
 }
 
