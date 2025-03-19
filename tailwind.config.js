@@ -8,17 +8,17 @@ module.exports = {
       extend: {
         colors: {
           'rojo': '#ed1c24',
-          'rojo-hover': '#f48c74',
+          'rojo-hover': '#ec533c',
           'danger': '#e3342f',
         },
         backgroundColor: {
           'rojo': '#ed1c24',
-          'rojo-hover': '#f48c74',
+          'rojo-hover': '#ec533c',
           
         },
         textColor: {
           'rojo': '#ed1c24',
-          'rojo-hover': '#f48c74',
+          'rojo-hover': '#ec533c',
           'danger': '#e3342f',
         },
         screens: {

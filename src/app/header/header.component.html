@@ -3,8 +3,8 @@
     <nav class=" border-gray-200 px-4 lg:px-6 py-2.5  text-white bg-rojo">
         <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
             <a href="#" class="flex items-center cursor-default">
-                <img src="LOGO SHOPPERS 2024.jpg" class="mr-3 h-16 lg:h-16" alt="Flowbite Logo" />
-                <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white hidden  sm-380:inline">Shoppers</span>
+                <img src="LOGO_SHOPPERS_20241-white.png" class="mr-3 h-16 lg:h-16" alt="Flowbite Logo" />
+                <!-- <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white hidden  sm-380:inline">Shoppers</span> -->
             </a>
             <div class="flex items-center lg:order-2 ">
                 <!-- component -->
@@ -28,12 +28,11 @@
                 <ul class="flex flex-col items-center mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                     <li>
                         <div class="block w-full">
-                            <select id="countries" class="h-10 border border-rojo-hover text-white text-base rounded-md block w-full py-1 px-1  bg-rojo-hover focus:outline-none" (change)="onCountryChange($event)">
-                            <option selected>Choose a country</option>
-                            <option value="US">United States</option>
-                            <option value="CA">Canada</option>
-                            <option value="FR">France</option>
-                            <option value="DE">Germany</option>
+                            <select id="countries" class="h-10 border border-rojo-hover text-white text-base rounded-md block w-full py-1 px-1  bg-rojo-hover focus:outline-none" (change)="onCategoryChange($event)">
+                            <option selected>Escoge una categoria </option>
+                                @for (item of categoriasPapeleria; track item) {
+                                    <option value={{item}}>{{item}}</option>
+                                }
                             </select>
                             </div>
                         

@@ -8,12 +8,35 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent {
   constructor(private router: Router) {}
-
-  onCountryChange(event: Event): void {
+   categoriasPapeleria:string[] = [
+    "Bolígrafos y marcadores",
+    "Lápices y portaminas",
+    "Carpetas y archivadores",
+    "Cuadernos y libretas",
+    "Hojas y papeles",
+    "Pegamento y adhesivos",
+    "Cinta adhesiva",
+    "Reglas y escuadras",
+    "Tijeras y cortadores",
+    "Papel de envolver y regalo",
+    "Calculadoras",
+    "Estuches y organizadores",
+    "Papel de impresora",
+    "Pinturas y pinceles",
+    "Etiquetas y adhesivos",
+    "Suministros para oficina",
+    "Sellos y tinta",
+    "Accesorios para escritura",
+    "Material de arte",
+    "Papelería escolar",
+    "Material de oficina"
+  ];
+  
+  onCategoryChange(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     const selectedValue = selectElement.value;
 
-    if (selectedValue) {
+    if (this.categoriasPapeleria.includes(selectedValue) ) {
       this.router.navigate([`/categoria/${selectedValue}`]);
     }
   }
