@@ -10,13 +10,14 @@
           <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
               <div class="sm:col-start-3 sm:cols-end-4 cols-start-1 cols-end-2">
                   <h2 class="mb-6 text-sm font-semibold uppercase text-white">Contactanos</h2>
-                  <ul class="text-white font-medium">
-                      <li class="mb-4">
-                          <a href="#" class="hover:underline">Privacy Policy</a>
+                  <ul class="text-white font-medium mb-4">
+                    @for (item of contacts; track $index) {
+                      <li >
+                            <a href={{item.link}} class="hover:underline flex items-center " target="_blank" rel="noopener noreferrer">
+                                <i class="pi pi-{{item.icon}} pr-1" ></i> {{item.label}}
+                            </a>
                       </li>
-                      <li>
-                          <a href="#" class="hover:underline">Terms &amp; Conditions</a>
-                      </li>
+                    }
                   </ul>
               </div>
           </div>
@@ -25,11 +26,13 @@
       <div class="sm:flex sm:items-center sm:justify-between">
           <span class="text-sm text-white">© {{year}} <a  class="hover:underline">{{title}}</a>. Todos los Derechos Reservados.
           </span>
-          <div class="flex mt-4 sm:justify-center sm:mt-0">
-            @for (item of socialMedia; track item) {
-              <a href={{item.link}} class="text-white" target="_blank" rel="noopener noreferrer">
-                  <mat-icon>{{item.icon}}</mat-icon>
-              </a>
+          <div class="flex mt-4  sm:mt-0 items-center">
+            @for (item of socialMedia; track item) {            
+                <a href="https://angular.dev/" target="_blank" rel="noopener noreferrer" class="px-2 bg-transparent " >
+                    <i class=" pi-{{item.icon}} pi text-xl" ></i>
+                </a>  
+                
+
             }
           </div>
       </div>

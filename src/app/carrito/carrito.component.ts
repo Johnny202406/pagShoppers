@@ -1,17 +1,13 @@
 import { Component } from '@angular/core';
+import { CardsCarritoComponent } from '../cards-carrito/cards-carrito.component';
 
 @Component({
   selector: 'app-carrito',
-  imports: [],
+  imports: [CardsCarritoComponent],
   templateUrl: './carrito.component.html',
   styleUrl: './carrito.component.css'
 })
 export class CarritoComponent { 
   visible:boolean=false
-  isRemove?:boolean
-  confirmar(){
-    this.isRemove= confirm("¿Estás seguro de remover el producto del carrito?")
-    if (this.isRemove) console.log("Producto Removido de carrito");
-    
-  }
+  
 }

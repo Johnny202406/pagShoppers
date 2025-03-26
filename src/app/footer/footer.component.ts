@@ -1,14 +1,20 @@
 import { Component } from '@angular/core';
-import {MatIconModule} from '@angular/material/icon';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-footer',
-  imports: [MatIconModule],
+  imports: [ButtonModule],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css'
 })
 export class FooterComponent {
-  socialMedia:object[]=[
+
+  contacts:any[]=[
+    {icon:'at',label:'example@gmail.com',link:'mailto:example@gmail.com'},
+    {icon:'map-marker',label:'Jr. 9 de diciembre 234',link:'https://'}
+  ]
+
+  socialMedia:any[]=[
     {icon:'facebook',link:''},
     {icon:'twitter',link:''},
     {icon:'instagram',link:''},
@@ -18,4 +24,6 @@ export class FooterComponent {
 
   title:string="Shoppers"
   year:number = new Date().getFullYear()
+
+
 }

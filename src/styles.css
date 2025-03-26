@@ -1,7 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 /* :root{
   --rojo:#ed1c24;
@@ -15,17 +17,4 @@
 *{
   font-family: 'Poppins';
 }
-@media (max-width: 639px) {
-  .cols2Card {
-    @apply grid-cols-2;
-  }
-}
-@media (max-width: 485px) {
-  .cols1Card {
-    @apply grid-cols-1;
-  }
-}
 
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

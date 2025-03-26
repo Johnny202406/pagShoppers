@@ -2,7 +2,6 @@
 module.exports = {
     content: [
       "./src/**/*.{html,ts}",
-      './node_modules/flyonui/dist/js/*.js',
     ],
     theme: {
       extend: {
@@ -38,8 +37,6 @@ module.exports = {
     },
     plugins: [
       // require("@designbycode/tailwindcss-text-shadow"),
-      require('flyonui'), 
-      require('flyonui/plugin')
     ],
   }
 }

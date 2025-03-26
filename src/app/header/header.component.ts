@@ -1,7 +1,9 @@
 import { Component,Output,EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { IconCartComponent } from '../icon-cart/icon-cart.component';
 
 @Component({
+  imports: [IconCartComponent],
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
