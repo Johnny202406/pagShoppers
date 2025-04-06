@@ -1,4 +1,8 @@
+<app-header (openCart)="carrito.visible=true;menu.visible=false" (openMenu)="menu.visible=true;carrito.visible=false"></app-header>
 <div class="w-full bg-amber-100" >
     <!-- style="min-height: calc(100vh - 84px);" -->
     <router-outlet></router-outlet>
 </div>
+<app-footer></app-footer>
+<app-carrito #carrito></app-carrito>
+<app-menu-content #menu></app-menu-content>

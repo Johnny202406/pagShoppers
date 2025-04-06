@@ -1,0 +1,32 @@
+<section class="bg-gray-50">
+    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto min-h-dvh lg:py-0">
+        <div routerLink="/" class="flex items-center mb-6 text-2xl font-semibold text-rojo cursor-pointer">
+            <img class="h-20 mr-2" src="LOGO_SHOPPERS_2024-removebg.png" alt="logo"> 
+            <!-- Shoppers -->
+        </div>
+        <div class="w-full bg-white rounded-lg shadow border sm:max-w-md xl:p-0">
+            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <h1 class="text-xl font-bold leading-tight tracking-tight text-rojo md:text-2xl">
+                    Iniciar sesión
+                </h1>
+                <form class="space-y-4 md:space-y-6" (submit)="loginAdmin()" [formGroup]="miFormulario">
+                    <div>
+                        <label for="adminname" class="block mb-2 text-sm font-medium text-gray-900">Nombre de administrador</label>
+                        <input formControlName="username" type="text" name="adminname" id="adminname"  class="block w-full p-2.5  text-sm font-bold  rounded-lg bg-white text-gray-900  focus:border-rojo-hover border-2 outline-none placeholder:text-gray-400 placeholder:font-extralight" placeholder="Tu nombre de administrador" required>
+                    </div>
+                    <div>
+                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Contraseña</label>
+                        <div class="relative flex">
+                            <input formControlName="password" type="{{password?'text':'password'}}" name="password" id="password" placeholder="••••••••" class="block w-full p-2.5 pr-10 text-sm font-bold  rounded-lg bg-white text-gray-900  focus:border-rojo-hover border-2 outline-none placeholder:text-gray-400 placeholder:font-extralight" required>
+                            <div (click)="changeVisibility()" class="absolute w-10 h-full right-0 cursor-pointer rounded-r-lg grid place-content-center">
+                                <i class="  pi {{password?'pi-eye':'pi-eye-slash'}} text-rojo  "></i>
+                            </div>
+                        </div>
+
+                    </div>
+                    <button type="submit" class="w-full text-white bg-rojo hover:bg-rojo-hover font-medium rounded-lg text-sm px-5 py-2.5 text-center">Ingresar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

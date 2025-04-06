@@ -1,5 +1,6 @@
 <div class="bg-gray-100">
   <div class="container mx-auto px-4 py-8 max-w-screen-xl">
+    <app-navigation></app-navigation>
     <div class="flex flex-wrap -mx-4">
       <!-- Product Images -->
       <div class="w-full md:w-1/2 sm:px-32 md:px-8 lg:px-14 mb-8 px-4">
@@ -17,10 +18,13 @@
 
       <!-- Product Details -->
       <div class="w-full md:w-1/2 px-4">
-        <h2 class="text-3xl font-bold mb-2 text-black">Premium Wireless Headphones</h2>
+        <h2 class="text-3xl font-bold mb-2 text-black">{{producto.nombre?producto.nombre:"Otro"}}</h2>
         <p class="text-gray-600 mb-4">SKU: WH1000XM4</p>
         <div class="mb-4">
-          <span class="text-2xl font-bold mr-2 text-black">$349.99</span>
+          <span class="text-2xl font-bold mr-2 text-black">
+            <span class="mr-0.5">S<span class="inline-block -rotate-12 -ml-0.5">&frasl;</span></span>
+            <span>{{producto.precio}}</span>
+          </span>
           <!-- <span class="text-gray-500 line-through">$399.99</span> -->
         </div>
         <p class="text-gray-700 mb-6">Experience premium sound quality and industry-leading noise cancellation with these wireless headphones. Perfect for music lovers and frequent travelers.</p>
@@ -30,9 +34,7 @@
         <div class="flex space-x-4 mb-6">
           <form class="max-w-full ">
             <label for="quantity-input" class=" mt-3 mb-1 text-xs font-extralight text-rojo flex items-center ">
-              Agregar al <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="file:  h-5 w-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-            </svg>
+              Agregar al <app-icon-cart class="ml-1"></app-icon-cart>
             </label>
             <div class="relative flex items-center  justify-center">
                 <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input" class="bg-rojo  hover:bg-rojo-hover   rounded-s-md  p-2 h-7 sm-360:h-8">

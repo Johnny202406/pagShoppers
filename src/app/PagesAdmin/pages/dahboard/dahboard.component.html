@@ -1,0 +1,92 @@
+<div class="estilo">
+<mat-card appearance="outlined">
+    <mat-card-header>
+        <mat-card-title>Contador - Primera forma</mat-card-title>
+
+        <mat-card-subtitle> Contador:{{counter}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+        <button mat-mini-fab extended (click)=
+        "incrementarDecrementar(1)">
+            <mat-icon>add</mat-icon> 
+        </button>
+        <button mat-mini-fab extended (click)=
+        "incrementarDecrementar(-1)">
+            <mat-icon>remove</mat-icon> 
+        </button>
+        <button mat-mini-fab extended (click)="reset()">
+            <mat-icon>sync</mat-icon> 
+        </button>
+        
+    </mat-card-actions>
+</mat-card>
+
+
+<mat-card appearance="outlined">
+    <mat-card-header>
+        <mat-card-title>Contador - Segunda forma</mat-card-title>
+
+        <mat-card-subtitle> Contador:{{counter2}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+        <button mat-mini-fab extended (click)=
+        "incrementar()">
+            <mat-icon>add</mat-icon> 
+        </button>
+        <button mat-mini-fab extended (click)=
+        "decrementar()">
+            <mat-icon>remove</mat-icon> 
+        </button>
+        <button mat-mini-fab extended (click)="reset2()">
+            <mat-icon>sync</mat-icon> 
+        </button>
+        
+    </mat-card-actions>
+</mat-card>
+
+<mat-card appearance="outlined">
+    <mat-card-header>
+        <mat-card-title>Contador - tercera forma</mat-card-title>
+
+        <mat-card-subtitle> Contador:{{countersignal()}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+        <button mat-mini-fab extended (click)=
+        "incrementarSignal(1)">
+            <mat-icon>add</mat-icon> 
+        </button>
+        <button mat-mini-fab extended (click)=
+        "incrementarSignal(-1)">
+            <mat-icon>remove</mat-icon> 
+        </button>
+        <button mat-mini-fab extended (click)="resetSignal()">
+            <mat-icon>sync</mat-icon> 
+        </button>
+        
+    </mat-card-actions>
+</mat-card>
+
+<mat-card appearance="outlined">
+    <mat-card-header>
+        <mat-card-title>Contador - cuarta forma</mat-card-title>
+
+        <mat-card-subtitle> Contador:{{count5}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+        <button mat-mini-fab extended (click)=
+        "add()">
+            <mat-icon>add</mat-icon> 
+        </button>
+        <button mat-mini-fab extended (click)=
+        "reducir()">
+            <mat-icon>remove</mat-icon> 
+        </button>
+        <button mat-mini-fab extended (click)="resetInput()">
+            <mat-icon>sync</mat-icon> 
+        </button>
+        
+    </mat-card-actions>
+</mat-card>
+
+</div>
+

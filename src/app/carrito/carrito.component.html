@@ -1,6 +1,6 @@
 
 
-<div [style.transform]="visible?'translate(0%)':'translate(100%)'" class="fixed inset-0 bg-gray-500/75  transition-all " >
+<div [style.transform]="visible?'translate(0%)':'translate(100%)'" class="fixed inset-0 bg-gray-500/75  transition-all z-20" >
   <div class="relative h-full w-full max-w-screen-xl mx-auto">
 
     <div class="sm:max-w-lg pt-[84px] absolute h-full right-0 w-full">
@@ -22,11 +22,6 @@
           <div class="   overflow-y-auto pr-2 w-full" style="height: calc(100dvh - 405px);scroll-behavior: smooth;scroll-snap-type: y mandatory;">
               <ul role="list" class="-my-6 divide-y divide-gray-200 w-full block" >
                 <app-cards-carrito></app-cards-carrito>
-                
-                
-                
-                
-
                 <!-- More products... -->
               </ul>
             

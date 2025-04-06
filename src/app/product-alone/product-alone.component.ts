@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
+import { IconCartComponent } from '../icon-cart/icon-cart.component';
+import { ActivatedRoute,Router } from '@angular/router';
+import { ProductoService } from '../get-data.service';
+import { NavigationComponent } from "../navigation/navigation.component";
 
 @Component({
   selector: 'app-product-alone',
   templateUrl: './product-alone.component.html',
   styleUrls: ['./product-alone.component.css'],
+  imports: [IconCartComponent, NavigationComponent]
 })
 export class ProductAloneComponent {
 
@@ -24,5 +29,22 @@ export class ProductAloneComponent {
     if(this.listImgs.includes(url)) return this.selectedImageUrl = url 
   }
 
+  producto: any = null;
+  nombre:string=''
+
+  constructor(private route: ActivatedRoute, private productoService: ProductoService,private router:Router) {}
+
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.nombre = params['id'];
+      // Ahora puedes usar categoryId para cargar datos específicos de la categoría
+      console.log(this.nombre);
+      if (this.nombre) {
+        this.producto = this.productoService.getOneProduct(this.nombre);
+        this.producto=== null?this.router.navigate([`/`]):''
+      }
+    });
+    
+  }
   
 }

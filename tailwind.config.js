@@ -7,17 +7,17 @@ module.exports = {
       extend: {
         colors: {
           'rojo': '#ed1c24',
-          'rojo-hover': '#ec533c',
+          'rojo-hover': '#f49a7d',
           'danger': '#e3342f',
         },
         backgroundColor: {
           'rojo': '#ed1c24',
-          'rojo-hover': '#ec533c',
+          'rojo-hover': '#f49a7d',
           
         },
         textColor: {
           'rojo': '#ed1c24',
-          'rojo-hover': '#ec533c',
+          'rojo-hover': '#f49a7d',
           'danger': '#e3342f',
         },
         screens: {
