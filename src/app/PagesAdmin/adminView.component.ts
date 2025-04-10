@@ -6,6 +6,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { MenuComponent } from "./components/menu/menu.component";
 import { DOCUMENT } from '@angular/common';
+import { environment as envs } from '@environnments/environment';
 
 
 @Component({
@@ -38,7 +39,7 @@ import { DOCUMENT } from '@angular/common';
 
     </mat-sidenav>
 
-    <mat-sidenav-content class="content bg-gray-200 ml-[250px]" [style.margin-left]="sidenavWidth()">
+    <mat-sidenav-content class="ml-[250px] content bg-gray-200 " [style.margin-left]="sidenavWidth()">
       <router-outlet/>
     </mat-sidenav-content>
 
@@ -72,6 +73,7 @@ import { DOCUMENT } from '@angular/common';
     .example-spacer {
        flex: 1 1 auto;
     }
+   
   `
 })
 export class ViewAdmin {
@@ -84,9 +86,9 @@ export class ViewAdmin {
   logout(){
     const isLogout:boolean=confirm("¿Está seguro de cerrar Sesión?");
     if (isLogout) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('adminOpen');
-      this.router.navigate(['/loginAdmin']);
+      localStorage.removeItem(envs.tokenLogin);
+      localStorage.removeItem(envs.tokenPestaña);
+      this.router.navigate([`/${envs.urlLoginAdmin}`]);
     }
   }
   

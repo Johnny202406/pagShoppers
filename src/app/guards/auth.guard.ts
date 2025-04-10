@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
+import { environment as envs} from '@environnments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,29 +9,35 @@ export class AuthGuard implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate(): boolean {
-    const token = localStorage.getItem('token'); // Verificar si hay un token de autenticación
+    const tkLogin = localStorage.getItem(envs.tokenLogin);
     
-    if (!token) {
-      // Si no hay token, redirigir al login
-      this.router.navigate(['/loginAdmin']);
+    if (tkLogin !== envs.tokenLoginValue) {
+      this.router.navigate([`/${envs.urlLoginAdmin}`]);
       return false;
     }
+
+    const tkPestaña = localStorage.getItem(envs.tokenPestaña);
     
-    // Verificar si hay otra pestaña activa
-    if (localStorage.getItem('adminOpen') === 'true') {
-      // Si ya hay otra pestaña activa, redirigir al login
-      this.router.navigate(['/loginAdmin']);
+    if (tkPestaña===envs.tokenPestañaValue) {
+      this.router.navigate([`/${envs.urlLoginAdmin}`]);
       return false;
     } else {
-      // Si no hay otra pestaña activa, marcar esta pestaña como abierta
-      localStorage.setItem('adminOpen', 'true');
-
-      // Detectar cuando la pestaña se cierra o se recarga para remover el flag
       window.addEventListener('beforeunload', () => {
-        localStorage.removeItem('adminOpen');
+        localStorage.removeItem(envs.tokenPestaña);
       });
 
-      return true; // Permitir el acceso a la vista de administración
+      window.addEventListener('storage', (event) => {
+        if (event.key === envs.tokenPestaña ) {
+          const tkPestaña = localStorage.getItem(envs.tokenPestaña);
+
+          if (tkPestaña !== envs.tokenPestañaValue ) {
+            this.router.navigate([`/${envs.urlLoginAdmin}`]);
+          }
+        }
+      });
+      localStorage.setItem(envs.tokenPestaña, envs.tokenPestañaValue);
+
+      return true;
     }
   }
 }

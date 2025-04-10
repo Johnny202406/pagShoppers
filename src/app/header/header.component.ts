@@ -2,6 +2,8 @@ import { Component,Output,EventEmitter } from '@angular/core';
 import { IconCartComponent } from '../icon-cart/icon-cart.component';
 import { InputSearchComponent } from "../input-search/input-search.component";
 import { SelectCategorieComponent } from "../select-categorie/select-categorie.component";
+import { environment } from '@environnments/environment';
+
 
 @Component({
   imports: [IconCartComponent, InputSearchComponent, SelectCategorieComponent],
@@ -10,7 +12,7 @@ import { SelectCategorieComponent } from "../select-categorie/select-categorie.c
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-
+  envs=environment
   //  boton para abrir carrito 
   @Output() openCart = new EventEmitter<void>();
   @Output() openMenu = new EventEmitter<void>();

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormGroup, FormControl,ReactiveFormsModule, Validators } from '@angular/forms';
+import { environment as envs } from '@environnments/environment';
 
 
 @Component({
@@ -11,6 +12,7 @@ import { FormGroup, FormControl,ReactiveFormsModule, Validators } from '@angular
 })
 export class LoginAdminComponent {
   constructor(private router: Router) {}
+  envs=envs
 
   password:boolean=false
   changeVisibility() {
@@ -23,27 +25,31 @@ export class LoginAdminComponent {
   });
   
   tk:User={
-    username:"pepe",
+    username:"tito",
     password:"123"
   }
 
   loginAdmin(){
     if(this.miFormulario.invalid) return alert("Complete todos los campos.")
 
-    if (localStorage.getItem('adminOpen')) return alert("Pestaña Abierta.")
+    if (localStorage.getItem(envs.tokenPestaña)) return alert("Pestaña Abierta.")
 
     const username=this.miFormulario.get('username')?.value
     const password=this.miFormulario.get('password')?.value
 
     if (this.tk.username===username && this.tk.password===password) {
-      localStorage.setItem('token','Welcome')
+      localStorage.setItem(envs.tokenLogin,envs.tokenLoginValue)
 
-      this.router.navigate(['/viewAdmin']);
+      this.router.navigate([`/${envs.urlViewAdmin}`]);
       return alert("Bienvenido.")
     }
 
     return alert("No existe.")
   
+  }
+
+  cleanLSP(){
+    localStorage.removeItem(envs.tokenPestaña)
   }
 }
 interface User{

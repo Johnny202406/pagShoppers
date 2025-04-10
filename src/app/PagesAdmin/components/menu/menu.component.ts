@@ -15,10 +15,10 @@ export type MenuItem={
   imports: [MatListModule,MatIconModule,RouterLink,RouterLinkActive],
   template: `
   <div class="sidenav-header">
-    <img src="icon.gif" alt="" [width]="profilePicSize()">
+    <!-- <img src="LOGO_SHOPPERS_2024-removebg.png" alt="" class="mx-auto" [width]="profilePicSize()"> -->
     <div class="header-text" [class.hide-header-text]="sideNavCollpsed()">
-      <h2>Jhonatan</h2>
-      <p>Ing</p>
+      <h2>NameAdmin</h2>
+      <p>Administrador</p>
     </div>
   </div>
   <mat-nav-list>
@@ -46,10 +46,7 @@ export type MenuItem={
       padding-top: 24px;
       text-align:center;
 
-      >img{
-        border-radius:100%;
-        object-fit:cover;
-      }
+      
 
       .header-text{
         >h2{
@@ -69,14 +66,13 @@ export type MenuItem={
     }
     .selected-menu-item{
       
-      
-      
     }
     .menu-item{
       border-right: 50px solid;
       border-color:rgba(48, 17, 187, 0);
       
     }
+    
     
   `
 })
@@ -89,20 +85,15 @@ export class MenuComponent {
 
   menuItems=signal<MenuItem[]>([
     {
-      icon:'dashboard',
-      label:'Dashboard',
-      route:'dashboard'
+      icon:'list_alt',
+      label:'Pedidos',
+      route:'pedidos'
     },
     {
-      icon:'video_library',
-      label:'Señales',
-      route:'senales'
-    },
-    {
-      icon:'video_library',
-      label:'Tercer',
-      route:'Tercer'
-    },
+      icon:'image',
+      label:'Imágenes',
+      route:'imagenes'
+    }
   ])
 
   profilePicSize = computed(()=>

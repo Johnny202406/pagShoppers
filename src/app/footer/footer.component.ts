@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
+import { environment } from '@environnments/environment';
+
 
 @Component({
   selector: 'app-footer',
@@ -8,7 +10,7 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './footer.component.css'
 })
 export class FooterComponent {
-
+  envs=environment
   contacts:any[]=[
     {icon:'at',label:'example@gmail.com',link:'mailto:example@gmail.com'},
     {icon:'map-marker',label:'Jr. 9 de diciembre 234',link:'https://'}
@@ -22,7 +24,6 @@ export class FooterComponent {
     {icon:'whatsapp',link:''},
   ]
 
-  title:string="Shoppers"
   year:number = new Date().getFullYear()
 
 

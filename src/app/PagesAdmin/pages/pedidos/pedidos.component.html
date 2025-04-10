@@ -1,0 +1,56 @@
+<div class="max-w-full p-2 bg-white border border-gray-200 rounded-lg shadow-sm flex flex-wrap mb-2">
+    @for (item of estados; track $index) {
+        <span class="flex items-center text-sm font-medium text-gray-900  me-3">
+            <span class="flex w-2.5 h-2.5 rounded-full me-1.5 shrink-0" [style.background]="item.color"></span>
+            {{item.descripcion}}
+        </span>
+    }
+</div>
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+
+    <div class="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-white px-2">
+        <div>
+            <p-select [options]="estados" [(ngModel)]="selectedEstado" [checkmark]="true" optionLabel="descripcion" [showClear]="true" placeholder="Selecciona" class="w-full md:w-48" />
+        </div>
+        <input (change)="busqueda()" type="text" pInputText [(ngModel)]="value" placeholder="Realize una búsqueda" />
+    </div>
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+            <tr>
+                <th scope="col" class="p-4">
+                    <div class="flex items-center">
+                        <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-rojo-hover bg-gray-100 border-gray-300 rounded-sm focus:ring-rojo-hover">
+                        <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                    </div>
+                </th>
+                @for (item of encabezados; track $index) {
+                <th scope="col" class="px-6 py-3">{{item}}</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of pedidos; track $index) {
+                <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
+                    <td class="w-4 p-4">
+                        <div class="flex items-center">
+                            <input id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-rojo-hover bg-gray-100 border-gray-300 rounded-sm focus:ring-rojo-hover">
+                            <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">{{item.id}}</td>
+                    <td class="px-6 py-4">{{item.dni}}</td>
+                    <td class="px-6 py-4">{{item.telefono}}</td>
+                    <td class="px-6 py-4">
+                        <div class="h-2.5 w-2.5 rounded-full  me-2" [style.background]="estados2[item.estado].color"></div> 
+                    </td>
+                    <td class="px-6 py-4">
+                        <div  class=" text-rojo cursor-pointer  ">
+                            <i class="pi pi-list" style="font-size:1.25rem;font-weight:bolder;"></i>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

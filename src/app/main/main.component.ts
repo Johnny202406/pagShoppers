@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
+import { environment } from '@environnments/environment';
 
 @Component({
   selector: 'app-main',
@@ -8,6 +9,10 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './main.component.css'
 })
 export class MainComponent {
+
+    envs=environment
+
+
   objDate:Date=new Date()
   textoFecha:string=`${this.nameDay(this.objDate.getDay())} ${this.objDate.toLocaleDateString()}`
   nameDay(diaSemana:number):string{
@@ -60,7 +65,7 @@ export class MainComponent {
     {
         icono: "pi-check", 
         titulo: "Realice su pedido", 
-        descripcion: "Complete su información, como DNI y teléfono, luego confirme su pedido para proceder con la compra."
+        descripcion: "Complete su información, como DNI y teléfono, luego confirme para proceder con el pedido. Se comunicarán en breve contigo."
     }
 ];
 

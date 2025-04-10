@@ -6,10 +6,13 @@ import { LoginAdminComponent } from './login-admin/login-admin.component';
 import { ViewComponent } from './view/view.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { ViewAdmin } from './PagesAdmin/adminView.component';
-import { DahboardComponent } from './PagesAdmin/pages/dahboard/dahboard.component';
-import { SenalesComponent } from './PagesAdmin/pages/senales/senales.component';
-import { TercerComponentComponent } from './PagesAdmin/pages/tercer-component/tercer-component.component';
+
 import { AuthGuard } from './guards/auth.guard';
+import { PedidosComponent } from './PagesAdmin/pages/pedidos/pedidos.component';
+import { ImagenesComponent } from './PagesAdmin/pages/imagenes/imagenes.component';
+import { environment as envs } from '@environnments/environment';
+
+
 
 
 export const routes: Routes = [
@@ -23,15 +26,14 @@ export const routes: Routes = [
       { path: 'producto/:id', component: ProductAloneComponent },
     ]
   },
-  { path: 'loginAdmin', component: LoginAdminComponent },
-  { path: 'viewAdmin',component:ViewAdmin,
+  { path: envs.urlLoginAdmin, component: LoginAdminComponent },
+  { path: envs.urlViewAdmin,component:ViewAdmin,
     canActivate: [AuthGuard],
     children: 
     [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DahboardComponent },
-      { path: 'senales', component: SenalesComponent },
-      { path: 'Tercer', component: TercerComponentComponent }
+      { path: '', redirectTo: 'pedidos', pathMatch: 'full' },
+      { path: 'pedidos', component:  PedidosComponent},
+      { path: 'imagenes', component: ImagenesComponent },
     ]
   },
 
