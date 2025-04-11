@@ -33,7 +33,6 @@ export class SearchCategoryComponent implements OnInit {
     });
   }
 
-  // @Output() openFilter = new EventEmitter<void>();
   
   
 
