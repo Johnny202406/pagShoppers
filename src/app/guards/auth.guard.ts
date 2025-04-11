@@ -35,6 +35,13 @@ export class AuthGuard implements CanActivate {
           }
         }
       });
+
+      setInterval(() => {
+        if (localStorage.getItem(envs.tokenLogin) !== envs.tokenLoginValue ) {
+          this.router.navigate([`/${envs.urlLoginAdmin}`]);
+        }
+      }, 1000);
+
       localStorage.setItem(envs.tokenPestaña, envs.tokenPestañaValue);
 
       return true;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute ,RouterLink} from '@angular/router';
 import { CardProductComponent } from '../card-product/card-product.component';
 import { productos } from '../data-example';
@@ -33,6 +33,8 @@ export class SearchCategoryComponent implements OnInit {
     });
   }
 
+  // @Output() openFilter = new EventEmitter<void>();
+  
   
 
 }
