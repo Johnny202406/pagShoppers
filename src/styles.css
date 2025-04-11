@@ -25,3 +25,11 @@
 .mat-drawer-inner-container {
   overflow-x:hidden !important;
 }
+
+
+/* .p-overlay{
+  left:-30px !important;
+  @media (min-width:768px) {
+    left: 0px !important;
+  }
+} */

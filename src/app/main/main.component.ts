@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { environment } from '@environnments/environment';
+import { SearchCategoryComponent } from "../search-category/search-category.component";
 
 @Component({
   selector: 'app-main',
-  imports: [],
+  imports: [SearchCategoryComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css'
 })

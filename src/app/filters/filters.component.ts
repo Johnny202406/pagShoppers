@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './filters.component.css'
 })
 export class FiltersComponent {
+  visibleMovil:boolean=false
   filters:any[]=[1,2,3]
   
   openDetails: boolean[] = [];

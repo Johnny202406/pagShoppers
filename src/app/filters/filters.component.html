@@ -1,47 +1,50 @@
-
-<form  class="w-full">
-    <h3 class="py-2 px-4 text-gray-900">Filtros</h3>
-    @for (item of filters; track $index) {
-     <div class="border-t border-gray-200 px-4 py-6 filter">
-       <h3 class="-mx-2 -my-3 flow-root ">
-         <!-- Expand/collapse section button -->
-         <button (click)="toggleDetail($index)"  type="button" class="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
-           <span class="font-medium text-gray-900">Color</span>
-           <span class="ml-6 flex items-center">
-            <i class="pi {{openDetails[$index]?'pi-plus':'pi-minus'}}"></i>
-           </span>
-         </button>
-       </h3>
-       <!-- Filter section, show/hide based on section state. -->
-       <div class="pt-6 " id="filter-section-mobile-0" [class.hidden]="openDetails[$index]">
-         <div class="space-y-6">
-           <div class="flex gap-3">
-             <div class="flex h-5 shrink-0 items-center">
-               <div class="group grid size-4 grid-cols-1">
-                 <input id="filter-mobile-color-0" name="color[]" value="white" type="checkbox" class="col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto">
-                 <svg class="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-[:disabled]:stroke-gray-950/25" viewBox="0 0 14 14" fill="none">
-                   <path class="opacity-0 group-has-[:checked]:opacity-100" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                   <path class="opacity-0 group-has-[:indeterminate]:opacity-100" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                 </svg>
+<div [class.-translate-x-[0%]]="visibleMovil"  class="md:translate-x-0 -translate-x-[105%] md:relative absolute   w-full h-full left-0    bg-gray-500/75  transition-all z-10">
+  <form  class=" border border-gray-200  shadow-sm w-56 bg-white " >
+     
+      <h3 class="flex items-start justify-between py-2 px-4 text-gray-900">
+        <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Filtros</h2>
+        <div class="ml-3 md:hidden h-7 items-center flex ">
+          <button type="button" (click)="visibleMovil=false" class="relative  -m-2 p-2 text-gray-400 hover:text-gray-500">
+            <span class="absolute -inset-0.5"></span>
+            <span class="sr-only">Close panel</span>
+            <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"  data-slot="icon">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </h3>
+      @for (item of filters; track $index) {
+       <div class="border-t border-gray-200 px-4 py-6 filter">
+         <h3 class="-mx-2 -my-3 flow-root ">
+           <!-- Expand/collapse section button -->
+           <button (click)="toggleDetail($index)"  type="button" class="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
+             <span class="font-medium text-gray-900">Color</span>
+             <span class="ml-6 flex items-center">
+              <i class="pi {{openDetails[$index]?'pi-plus':'pi-minus'}}"></i>
+             </span>
+           </button>
+         </h3>
+         <!-- Filter section, show/hide based on section state. -->
+         <div class="pt-6 " id="filter-section-mobile-0" [class.hidden]="openDetails[$index]">
+           <div class="space-y-6">
+             <div class="flex gap-3">
+               <div class="flex h-5 shrink-0 items-center">
+                 <div class="group grid size-4 grid-cols-1">
+                   <input id="filter-mobile-color-0" name="color[]" value="white" type="checkbox" class="col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto">
+                   <svg class="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-[:disabled]:stroke-gray-950/25" viewBox="0 0 14 14" fill="none">
+                     <path class="opacity-0 group-has-[:checked]:opacity-100" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                     <path class="opacity-0 group-has-[:indeterminate]:opacity-100" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                   </svg>
+                 </div>
                </div>
+               <label for="filter-mobile-color-0" class="min-w-0 flex-1 text-gray-500">White</label>
              </div>
-             <label for="filter-mobile-color-0" class="min-w-0 flex-1 text-gray-500">White</label>
-           </div>
-           <div class="flex gap-3">
-             <div class="flex h-5 shrink-0 items-center">
-               <div class="group grid size-4 grid-cols-1">
-                 <input id="filter-mobile-color-1" name="color[]" value="beige" type="checkbox" class="col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto">
-                 <svg class="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-[:disabled]:stroke-gray-950/25" viewBox="0 0 14 14" fill="none">
-                   <path class="opacity-0 group-has-[:checked]:opacity-100" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                   <path class="opacity-0 group-has-[:indeterminate]:opacity-100" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                 </svg>
-               </div>
-             </div>
-             <label for="filter-mobile-color-1" class="min-w-0 flex-1 text-gray-500">Beige</label>
            </div>
          </div>
        </div>
-     </div>
-    }
-    
-  </form>
+      }
+      
+  </form>  
+</div>
+
+

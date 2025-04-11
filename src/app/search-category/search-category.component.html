@@ -1,59 +1,22 @@
 <section class="bg-gray-50 py-4 antialiased  md:py-6">
     <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+
       <!-- Heading & Filters -->
-      <div class="pb-6 items-end justify-between space-y-4 sm:flex sm:space-y-0 border-b border-gray-200">
+      <div class="pb-6 md:items-end justify-between space-y-2 sm:flex md:space-y-0 border-b border-gray-200 flex-col md:flex-row">
         <div class="text-rojo ">
           <app-navigation></app-navigation>
           <h1 class="text-2xl font-bold text-rojo">{{categoryId}}</h1>
         </div>
-        <div class="flex items-center space-x-4">
-          <button  type="button" class="flex w-full items-center justify-center rounded-lg   px-3 py-2 text-sm font-medium text-white     bg-rojo   sm:w-auto md:hidden  ">
-            <svg class="-ms-0.5 me-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z" />
-            </svg>
-            Filtros
-            <svg class="-me-0.5 ms-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
-            </svg>
-          </button>
-          <button id="sortDropdownButton1" type="button" class="flex w-full items-center justify-center rounded-lg   px-3 py-2 text-sm font-medium text-white     bg-rojo   sm:w-auto  ">
-            <svg class="-ms-0.5 me-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M7 4l3 3M7 4 4 7m9-3h6l-6 6h6m-6.5 10 3.5-7 3.5 7M14 18h4" />
-            </svg>
-            Orden
-            <svg class="-me-0.5 ms-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
-            </svg>
-          </button>
-          <div id="dropdownSort1" class="z-50 hidden w-40 divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700" data-popper-placement="bottom">
-            <ul class="p-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400" aria-labelledby="sortDropdownButton">
-              <li>
-                <a href="#" class="group inline-flex w-full items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"> The most popular </a>
-              </li>
-              <li>
-                <a href="#" class="group inline-flex w-full items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"> Newest </a>
-              </li>
-              <li>
-                <a href="#" class="group inline-flex w-full items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"> Increasing price </a>
-              </li>
-              <li>
-                <a href="#" class="group inline-flex w-full items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"> Decreasing price </a>
-              </li>
-              <li>
-                <a href="#" class="group inline-flex w-full items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"> No. reviews </a>
-              </li>
-              <li>
-                <a href="#" class="group inline-flex w-full items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"> Discount % </a>
-              </li>
-            </ul>
-          </div>
+        <div class="flex items-center flex-wrap justify-between gap-1">
+          
+          <div (click)="filter.visibleMovil=true" class="md:hidden w-52 bg-rojo py-2 px-3 rounded-md">Filtros</div>
+          <app-sort-products></app-sort-products>
         </div>
       </div>
+
       <!-- main -->
-      <div class="flex mb-4 pt-6 gap-2">
-        <div class="bg-white md:flex hidden border border-gray-200  shadow-sm max-w-56 w-full">
-          <app-filters class="w-full"></app-filters>
-       </div>
+      <div class="flex mb-4 pt-6 gap-2 relative">
+        <app-filters #filter></app-filters>
         <div class="containerMio grid gap-2  w-full h-max " style="grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));place-items: center;">
           @for (item of productos; track $index) {
             <app-card-product [producto]="item"></app-card-product>

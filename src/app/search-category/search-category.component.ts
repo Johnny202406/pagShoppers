@@ -5,12 +5,13 @@ import { productos } from '../data-example';
 import { PaginationComponent } from "../pagination/pagination.component";
 import { NavigationComponent } from "../navigation/navigation.component";
 import { FiltersComponent } from "../filters/filters.component";
+import { SortProductsComponent } from "../sort-products/sort-products.component";
 
 @Component({
   selector: 'app-search-category',
   templateUrl: './search-category.component.html',
   styleUrls: ['./search-category.component.css'],
-  imports: [CardProductComponent, PaginationComponent, NavigationComponent, FiltersComponent],
+  imports: [CardProductComponent, PaginationComponent, NavigationComponent, FiltersComponent, SortProductsComponent],
   standalone:true,
   
 })
