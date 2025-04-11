@@ -27,7 +27,7 @@ export class SearchCategoryComponent implements OnInit {
   ngOnInit(): void {
     
     this.route.params.subscribe(params => {
-      this.categoryId = params['id'];
+      this.categoryId = params['id'] || "Nuevos";
       // Ahora puedes usar categoryId para cargar datos específicos de la categoría
       // console.log(this.categoryId);
     });
