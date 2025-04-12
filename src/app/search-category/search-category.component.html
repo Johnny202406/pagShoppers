@@ -4,12 +4,14 @@
       <!-- Heading & Filters -->
       <div class="pb-6 md:items-end justify-between space-y-2 sm:flex md:space-y-0 border-b border-gray-200 flex-col md:flex-row">
         <div class="text-rojo ">
-          <app-navigation></app-navigation>
+          @if (isVisibleInProduct) {
+            <app-navigation></app-navigation>
+          }
           <h1 class="text-2xl font-bold text-rojo">{{categoryId}}</h1>
         </div>
         <div class="flex items-center flex-wrap justify-between gap-1">
           
-          <div (click)="filter.visibleMovil=true"   class="md:hidden w-52 bg-rojo py-2 px-3 rounded-md cursor-pointer">Filtros</div>
+          <div (click)="filter.visibleMovil=true"   class="md:hidden w-[216px] bg-rojo py-2 px-3 rounded-md cursor-pointer">Filtros</div>
           <app-sort-products></app-sort-products>
         </div>
       </div>

@@ -12,13 +12,15 @@ export class NavigationComponent {
   
     categoryId: string = '';
     seccion: string = '';
-  
+
+    isVisible?:boolean
   
     constructor(private route: ActivatedRoute) {}
   
     ngOnInit(): void {
       this.route.url.subscribe(url => {
         this.seccion=url[0].path;
+        this.isVisible=this.seccion!=="inicio" 
       });
       
       // this.route.params.subscribe(params => {

@@ -18,16 +18,30 @@ import { SortProductsComponent } from "../sort-products/sort-products.component"
 export class SearchCategoryComponent implements OnInit {
   productos:any[]=productos
 
+  seccion:string=''
   categoryId: string = '';
+
+  isMain:string=''
+  isProduct:string=''
+
+  isVisibleInProduct?:boolean;
+
 
   
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.route.url.subscribe(url => {
+      this.seccion=url[0].path;
+      this.isVisibleInProduct=this.seccion!=="producto"
+
+      this.isMain=this.seccion==="inicio"?"Nuevos":""
+      this.isProduct=this.seccion==="producto"?"Productos Relacionados":""
+    })
     
     this.route.params.subscribe(params => {
-      this.categoryId = params['id'] || "Nuevos";
+      this.categoryId = this.isMain|| this.isProduct ||params['id'] ;
       // Ahora puedes usar categoryId para cargar datos específicos de la categoría
       // console.log(this.categoryId);
     });

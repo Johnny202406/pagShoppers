@@ -3,12 +3,13 @@ import { IconCartComponent } from '../icon-cart/icon-cart.component';
 import { ActivatedRoute,Router } from '@angular/router';
 import { ProductoService } from '../get-data.service';
 import { NavigationComponent } from "../navigation/navigation.component";
+import { SearchCategoryComponent } from "../search-category/search-category.component";
 
 @Component({
   selector: 'app-product-alone',
   templateUrl: './product-alone.component.html',
   styleUrls: ['./product-alone.component.css'],
-  imports: [IconCartComponent, NavigationComponent]
+  imports: [IconCartComponent, NavigationComponent, SearchCategoryComponent]
 })
 export class ProductAloneComponent {
 
