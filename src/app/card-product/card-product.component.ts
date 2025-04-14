@@ -1,7 +1,8 @@
-import { Component ,Input} from '@angular/core';
+import { Component ,Input, Pipe} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IconCartComponent } from '../icon-cart/icon-cart.component';
 import { ButtonsCardComponent } from '../buttons-card/buttons-card.component';
+
 
 
 @Component({
@@ -12,4 +13,8 @@ import { ButtonsCardComponent } from '../buttons-card/buttons-card.component';
 })
 export class CardProductComponent {
   @Input() producto:any;
+  getSlug(nombre: string): string {
+    return nombre.toLowerCase().replace(/ /g, '-');
+  }
+  
 }

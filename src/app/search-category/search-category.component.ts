@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute ,RouterLink} from '@angular/router';
 import { CardProductComponent } from '../card-product/card-product.component';
 import { productos } from '../data-example';
@@ -16,34 +16,25 @@ import { SortProductsComponent } from "../sort-products/sort-products.component"
   
 })
 export class SearchCategoryComponent implements OnInit {
-  productos:any[]=productos
 
-  seccion:string=''
+
+  productos:any[]=productos.slice(0,15)
+
   categoryId: string = '';
 
-  isMain:string=''
-  isProduct:string=''
+  @Input() category:any;
+  isVisible?:boolean;
+ 
 
-  isVisibleInProduct?:boolean;
-
-
-  
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.route.url.subscribe(url => {
-      this.seccion=url[0].path;
-      this.isVisibleInProduct=this.seccion!=="producto"
-
-      this.isMain=this.seccion==="inicio"?"Nuevos":""
-      this.isProduct=this.seccion==="producto"?"Productos Relacionados":""
-    })
     
     this.route.params.subscribe(params => {
-      this.categoryId = this.isMain|| this.isProduct ||params['id'] ;
-      // Ahora puedes usar categoryId para cargar datos específicos de la categoría
-      // console.log(this.categoryId);
+      this.categoryId = this.category || params['id'];
+      this.isVisible=this.category?false:true
+
     });
   }
 

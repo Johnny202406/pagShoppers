@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
 
@@ -12,15 +12,14 @@ export class NavigationComponent {
   
     categoryId: string = '';
     seccion: string = '';
+  
 
-    isVisible?:boolean
   
     constructor(private route: ActivatedRoute) {}
   
     ngOnInit(): void {
       this.route.url.subscribe(url => {
-        this.seccion=url[0].path;
-        this.isVisible=this.seccion!=="inicio" 
+        this.seccion=url[0].path;  
       });
       
       // this.route.params.subscribe(params => {

@@ -14,6 +14,6 @@ export class ProductoService {
     return productos
   }
   getOneProduct(nombre: string) {
-    return this.productos.find(p => p.nombre.toLowerCase() === nombre.toLowerCase()) || null;
+    return this.productos.find(p => p.nombre.toLowerCase().replace(/ /g, '-') === nombre) || null;
   }
 }
