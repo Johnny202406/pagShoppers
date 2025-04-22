@@ -12,7 +12,7 @@ export class GetDataService {
   private filtrosSubject = new BehaviorSubject<any>({});
   private ordenSubject = new BehaviorSubject<string | null>(null);
   private paginaSubject = new BehaviorSubject<number>(1);
-  private pageSize:number = 4;
+  private pageSize:number = 5;
 
   filtros$ = this.filtrosSubject.asObservable();
   orden$ = this.ordenSubject.asObservable();
