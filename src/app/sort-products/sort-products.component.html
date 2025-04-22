@@ -1,1 +1,9 @@
-<p-select [options]="Orders" [(ngModel)]="selectedOrder" [checkmark]="true" optionLabel="label"[showClear]="true" placeholder="Ordenar Por" class="w-[216px] " />
+<p-select 
+  [options]="Orders" 
+  [(ngModel)]="selectedOrder" 
+  optionLabel="label" 
+  placeholder="Ordenar Por" 
+  [showClear]="true" 
+  class="w-[216px]" 
+  (onChange)="onOrderChange()">
+</p-select>

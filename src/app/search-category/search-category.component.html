@@ -1,34 +1,32 @@
-<section class="bg-gray-50 py-4 antialiased  md:py-6">
-    <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+<section class="bg-gray-50 py-4 antialiased md:py-6">
+  <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
 
-      <!-- Heading & Filters -->
-      <div class="pb-6 md:items-end justify-between space-y-2 sm:flex md:space-y-0 border-b border-gray-200 flex-col md:flex-row">
-        <div class="text-rojo ">
-          @if (isVisible) {
-            <app-navigation></app-navigation>
-          }
-          
-          <h1 class="text-2xl font-bold text-rojo">{{categoryId}}</h1>
-        </div>
-        <div class="flex items-center flex-wrap justify-between gap-1">
-          
-          <div (click)="filter.visibleMovil=true"   class="md:hidden w-[216px] bg-rojo py-2 px-3 rounded-md cursor-pointer">Filtros</div>
-          <app-sort-products></app-sort-products>
-        </div>
+    <!-- Heading & Filters -->
+    <div class="pb-6 md:items-end justify-between space-y-2 sm:flex md:space-y-0 border-b border-gray-200 flex-col md:flex-row">
+      <div class="text-rojo">
+        @if (!data) {
+          <app-navigation ></app-navigation>
+        }
+        <h1 class="text-2xl font-bold text-rojo">{{ label }}</h1>
       </div>
-
-      <!-- main -->
-      <div class="flex mb-4 pt-6 gap-2 relative">
-        <app-filters #filter ></app-filters>
-        <div class="containerMio grid gap-2  w-full h-max " style="grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));place-items: center;">
-          @for (item of productos; track $index) {
-            <app-card-product [producto]="item"></app-card-product>
-          }
-        </div>
+      <div class="flex items-center flex-wrap justify-between gap-1">
+        <div (click)="filter.visibleMovil=true" class="md:hidden w-[216px] bg-rojo py-2 px-3 rounded-md cursor-pointer">Filtros</div>
+        <app-sort-products ></app-sort-products>
       </div>
-      <app-pagination></app-pagination>
-      
     </div>
-  
-    
+
+    <!-- Main content for products -->
+    <div class="flex mb-4 pt-6 gap-2 relative">
+      <app-filters #filter ></app-filters>
+      <div class="containerMio grid gap-2 w-full h-max" style="grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); place-items: center;">
+        @for (item of productos; track $index) {
+          <app-card-product  [producto]="item"></app-card-product>
+        }
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <app-pagination ></app-pagination>
+
+  </div>
 </section>

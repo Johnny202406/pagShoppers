@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { environment } from '@environnments/environment';
 import { SearchCategoryComponent } from "../search-category/search-category.component";
+import { productos } from '../data-example';
+
 
 @Component({
   selector: 'app-main',
@@ -11,8 +13,8 @@ import { SearchCategoryComponent } from "../search-category/search-category.comp
 })
 export class MainComponent {
 
-    envs=environment
-
+  envs=environment
+  data=productos.slice(15,30)  
 
   objDate:Date=new Date()
   textoFecha:string=`${this.nameDay(this.objDate.getDay())} ${this.objDate.toLocaleDateString()}`
@@ -44,8 +46,6 @@ export class MainComponent {
   }
   
   }
-
-  
 
   tutorial:any[] = [
     {

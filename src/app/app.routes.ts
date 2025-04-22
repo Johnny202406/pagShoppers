@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { SearchCategoryComponent } from './search-category/search-category.component';
 import { MainComponent } from './main/main.component';
 import { ProductAloneComponent } from './product-alone/product-alone.component';
-import { LoginAdminComponent } from './login-admin/login-admin.component';
+import { LoginAdminComponent } from './PagesAdmin/components/login-admin/login-admin.component';
 import { ViewComponent } from './view/view.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { ViewAdmin } from './PagesAdmin/adminView.component';

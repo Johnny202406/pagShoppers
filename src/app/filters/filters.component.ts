@@ -1,40 +1,47 @@
-import { Component, Input } from '@angular/core';
-import { productos } from '../data-example';
+import { Component, OnInit } from '@angular/core';
+import { GetDataService } from '../get-data.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-filters',
-  imports: [],
   templateUrl: './filters.component.html',
-  styleUrl: './filters.component.css'
+  styleUrls: ['./filters.component.css'],
+  standalone: true,
+  imports: [FormsModule],
 })
-export class FiltersComponent {
-  visibleMovil:boolean=false
-  
-  filters:any[]=[1,2,3]
-  
+export class FiltersComponent implements OnInit {
+  visibleMovil: boolean = false;
   openDetails: boolean[] = [];
+  marcas: any[] = [];
+  onlyWithStock: boolean = false;
+  minPrice: number = 0;
+  maxPrice: number = 10000;
+  selectedMarcas: { [key: string]: boolean } = {};
 
-  getMarcasConCantidad(productos: any[]): any[] {
-    // Contamos las marcas y la cantidad de productos por marca
-    const marcas = productos.reduce((acc, producto) => {
-      if (acc[producto.marca]) {
-        acc[producto.marca].cantidad++;
-      } else {
-        acc[producto.marca] = { marca: producto.marca, cantidad: 1 };
-      }
-      return acc;
-    }, {});
+  constructor(private productoService: GetDataService) {}
 
-    
-    // Convertimos el objeto en un array para devolverlo
-    return Object.values(marcas);
+  ngOnInit() {
+  
+      this.marcas = this.productoService.getMarcasConCantidad();
+      this.marcas.forEach(marca => {
+        this.selectedMarcas[marca.marca] = false;
+      });
+  
   }
-  marcas=this.getMarcasConCantidad(productos)
-
-  
-  
 
   toggleDetail(index: number) {
     this.openDetails[index] = !this.openDetails[index];
+  }
+
+  // This method will update the filters in the service
+  onFilterChange() {
+    const selectedFilters = {
+      conStock: this.onlyWithStock,
+      marcas: Object.keys(this.selectedMarcas).filter(marca => this.selectedMarcas[marca]),
+      precioMin: this.minPrice,
+      precioMax: this.maxPrice,
+    };
+
+    this.productoService.setFiltros(selectedFilters); 
   }
 }

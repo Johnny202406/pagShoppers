@@ -25,7 +25,7 @@ export class LoginAdminComponent {
   });
   
   tk:User={
-    username:"tito",
+    username:"idlib",
     password:"123"
   }
 

@@ -3,6 +3,8 @@ import { IconCartComponent } from '../icon-cart/icon-cart.component';
 import { InputSearchComponent } from "../input-search/input-search.component";
 import { SelectCategorieComponent } from "../select-categorie/select-categorie.component";
 import { environment } from '@environnments/environment';
+import { CarritoService } from '../cart.service';
+
 
 
 @Component({
@@ -12,6 +14,8 @@ import { environment } from '@environnments/environment';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
+  constructor(private carritoService: CarritoService) {}
+  
   envs=environment
   //  boton para abrir carrito 
   @Output() openCart = new EventEmitter<void>();
@@ -21,5 +25,8 @@ export class HeaderComponent {
   }
   openMenuContent(){
     this.openMenu.emit()
+  }
+  getNproductos(): number {
+    return this.carritoService.obtenerCantidadTotal();
   }
 }

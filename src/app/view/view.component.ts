@@ -13,5 +13,4 @@ import { MenuContentComponent } from "../menu-content/menu-content.component";
   styleUrl: './view.component.css'
 })
 export class ViewComponent {
-
 }

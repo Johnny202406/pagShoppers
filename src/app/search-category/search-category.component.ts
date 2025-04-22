@@ -1,44 +1,48 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ActivatedRoute ,RouterLink} from '@angular/router';
+import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Producto, productos } from '../data-example';
+import { GetDataService } from '../get-data.service';
+
 import { CardProductComponent } from '../card-product/card-product.component';
-import { productos } from '../data-example';
-import { PaginationComponent } from "../pagination/pagination.component";
-import { NavigationComponent } from "../navigation/navigation.component";
-import { FiltersComponent } from "../filters/filters.component";
-import { SortProductsComponent } from "../sort-products/sort-products.component";
+import { PaginationComponent } from '../pagination/pagination.component';
+import { NavigationComponent } from '../navigation/navigation.component';
+import { FiltersComponent } from '../filters/filters.component';
+import { SortProductsComponent } from '../sort-products/sort-products.component';
 
 @Component({
   selector: 'app-search-category',
   templateUrl: './search-category.component.html',
   styleUrls: ['./search-category.component.css'],
-  imports: [CardProductComponent, PaginationComponent, NavigationComponent, FiltersComponent, SortProductsComponent],
-  standalone:true,
-  
+  imports: [
+    CardProductComponent,
+    PaginationComponent,
+    NavigationComponent,
+    FiltersComponent,
+    SortProductsComponent
+  ],
+  standalone: true,
 })
 export class SearchCategoryComponent implements OnInit {
+  productos: Producto[] = productos.slice(20, 30);
 
+  @Input() label: string | undefined;  
+  @Input() data: Producto[] | undefined; 
 
-  productos:any[]=productos.slice(0,15)
-
-  categoryId: string = '';
-
-  @Input() category:any;
-  isVisible?:boolean;
- 
-
-
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private productoService: GetDataService
+  ) {}
 
   ngOnInit(): void {
-    
+    const subset = this.data || this.productos;
+    this.productoService.setData(subset);
+    this.productoService.productos$.subscribe(productos => {
+      this.productos = productos;
+    });
+  
     this.route.params.subscribe(params => {
-      this.categoryId = this.category || params['id'];
-      this.isVisible=this.category?false:true
-
+      this.label = this.label || params['id'];
     });
   }
-
   
-  
-
 }
