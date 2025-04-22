@@ -8,7 +8,6 @@ export const environment = {
     tokenPestaña: "sk_live_f2a1c8b0e99f4f9e9b1a2e3d7f98a7c3_2ffb9e9dce694d7f84e0ac23c4b2aa49",
     tokenPestañaValue: "sk_live_f2a1c8b0e99f4f9e9b1a2e3d7f98a7c3_2ffb9e9dce694d7f84e0ac23c4b2aa49",
     
-
     urlLoginAdmin:"loginAdmin",
     urlViewAdmin:"viewAdmin",
   };

@@ -16,7 +16,7 @@
         <span class="text-xs">precio: </span>
         <span class="text-base font-medium text-nowrap">
           <span class="mr-0.5">S<span class="inline-block -rotate-12 -ml-0.5">&frasl;</span></span>
-          <span>{{ item.producto.precio }}</span>
+          <span>{{ item.producto.precio| number:'1.2-2' }}</span>
         </span> 
       </p>
       <app-buttons-card
@@ -30,7 +30,7 @@
       <span class="text-xs">subtotal: </span>  
       <span class="text-base font-medium text-nowrap">
         <span class="mr-0.5">S<span class="inline-block -rotate-12 -ml-0.5">&frasl;</span></span>
-        <span>{{ item.producto.precio * item.cantidad| number:'1.2-2' }}</span>
+        <span>{{ item.subtotal| number:'1.2-2' }}</span>
       </span> 
     </p>
   </div>

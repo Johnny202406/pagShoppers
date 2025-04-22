@@ -5,6 +5,7 @@ import { Producto } from './data-example';
 export interface Carrito {
   producto: Producto;
   cantidad: number;
+  subtotal:number
 }
 @Injectable({
   providedIn: 'root'
@@ -40,13 +41,14 @@ export class CarritoService {
 
   añadirAlCarrito(producto: Producto, cantidad: number): void {
     const index = this.carritoProductos.findIndex(item => item.producto.id === producto.id);
-    
+    const subtotal=producto.precio*cantidad
     if (index !== -1) {
-      // Si el producto ya está en el carrito, actualiza la cantidad
+      // Si el producto ya está en el carrito, actualiza la cantidad y subtotal
       this.carritoProductos[index].cantidad = cantidad;
+      this.carritoProductos[index].subtotal =subtotal ;
     } else {
       // Si el producto no está en el carrito, añádelo
-      this.carritoProductos.push({ producto, cantidad });
+      this.carritoProductos.push({ producto, cantidad,subtotal  });
     }
 
     this.guardarEnLocalStorage();
@@ -65,7 +67,7 @@ export class CarritoService {
 
   calcularTotalCarrito(): number {
     // Calcula el total del carrito
-    return this.carritoProductos.reduce((total, item) => total + (item.producto.precio * item.cantidad), 0);
+    return this.carritoProductos.reduce((total, item) => total + item.subtotal, 0);
   }
 
   obtenerCantidadTotal(): number {

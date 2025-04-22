@@ -3,12 +3,13 @@ import { RouterLink } from '@angular/router';
 import { IconCartComponent } from '../icon-cart/icon-cart.component';
 import { ButtonsCardComponent } from '../buttons-card/buttons-card.component';
 import { CarritoService } from '../cart.service';
+import { CommonModule } from '@angular/common';
 
 
 
 @Component({
   selector: 'app-card-product',
-  imports: [RouterLink,IconCartComponent,ButtonsCardComponent],
+  imports: [RouterLink,IconCartComponent,ButtonsCardComponent,CommonModule],
   templateUrl: './card-product.component.html',
   styleUrl: './card-product.component.css'
 })

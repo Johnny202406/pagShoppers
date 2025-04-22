@@ -19,7 +19,7 @@ export class PaginationComponent implements OnInit {
 
   constructor(private productoService: GetDataService) {}
 
-  ngOnInit(): void {
+  ngOnInit(){
     this.productoService.setPageSize(this.pageSize)
 
     // Suscribirse a la página actual
