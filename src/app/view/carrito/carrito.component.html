@@ -1,0 +1,98 @@
+<div [style.transform]="visible ? 'translate(0%)' : 'translate(100%)'" class="fixed inset-0 bg-gray-500/75 transition-all z-20">
+  <div class="relative h-full w-full max-w-screen-xl mx-auto">
+    <div class="sm:max-w-lg pt-[84px] absolute h-full right-0 w-full">
+      <div class="flex flex-col bg-white shadow-xl relative h-full">
+        <!-- CARRITO -->
+        <div class="flex-1 flex flex-col px-4 py-6 sm:px-6 gap-8">
+          <div class="flex items-start justify-between">
+            <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">
+              Carrito de Compras
+            </h2>
+            @if (productosEnCarrito.length>0) {
+              <i class="pi pi-eraser text-gray-950 cursor-pointer" (click)="clearCart()" style="font-size: 1.25rem;"></i>
+            }
+            <div class="ml-3 flex h-7 items-center">
+              <button type="button" (click)="visible=false" class="relative -m-2 p-2 text-gray-400 hover:text-gray-500">
+                <span class="absolute -inset-0.5"></span>
+                <span class="sr-only">Cerrar panel</span>
+                <i class="pi pi-times" style="font-size: 1.25rem;"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="overflow-y-auto pr-2 w-full" style="height: calc(100dvh - 405px); scroll-behavior: smooth; scroll-snap-type: y mandatory;">
+            <ul role="list" class="-my-6 divide-y divide-gray-200 w-full block">
+              @for (item of productosEnCarrito; track item) {
+                <app-cards-carrito 
+                  [item]="item" >
+                </app-cards-carrito>
+                } @empty {
+                <li class="text-gray-400 flex flex-col py-6 w-full items-center gap-1">
+                  Agregue productos por favor.
+                  <img src="https://pa1.aminoapps.com/6115/4c3638aeb1b83963e956b4aa44f569ac499b3b58_hq.gif" alt="" class="max-w-56 opacity-40">
+                </li>
+                }
+              
+            </ul>
+            
+          </div>
+        </div>
+
+        <div class="border-t border-gray-200 px-4 py-6 sm:px-6 w-full">
+          <div class="flex justify-between text-base font-medium text-gray-900">
+            <p>Total</p>
+            <p><span class="mr-0.5">S<span class="inline-block -rotate-12 -ml-0.5">&frasl;</span></span>{{ getTotal() | number:'1.2-2' }}</p>
+          </div>
+          <p class="mt-0.5 text-sm text-gray-500">Revisa los detalles de tu pedido antes de continuar.</p>
+          <div class="mt-6">
+            <button id="sistem" (click)="viewFormContacts()" class="flex w-full items-center  justify-center rounded-md border border-transparent bg-rojo px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-rojo-hover" [disabled]="productosEnCarrito.length===0">Continuar</button>
+          </div>
+          <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
+            <p class="flex">
+              o
+              <button id="whatsapp" class="flex items-center font-medium ml-2 text-rojo hover:text-rojo-hover" [disabled]="productosEnCarrito.length===0" >
+                Enviar por WhatsApp
+                <i class="pi pi-arrow-right ml-2"></i>
+              </button>
+            </p>
+          </div>
+        </div>
+        @if (contactos) {
+          <!-- LOGIN -->
+          <div class="flex-1 flex flex-col px-4 py-6 sm:px-6 gap-8 absolute bg-white w-full h-full">
+            <div class="flex items-start justify-between">
+              <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">
+                Añadir contactos
+              </h2>
+              <div class="ml-3 flex h-7 items-center">
+                <button type="button" (click)="viewFormContacts()" class="relative -m-2 p-2 text-gray-400 hover:text-gray-500">
+                  <span class="absolute -inset-0.5"></span>
+                  <span class="sr-only">Cerrar panel</span>
+                  <i class="pi pi-times" style="font-size: 1.25rem;"></i>
+                </button>
+              </div>
+            </div>
+  
+            <div class="overflow-y-auto pr-2 w-full" >
+                <form class="space-y-4 md:space-y-6" (submit)="enviarPedido()" [formGroup]="miFormulario">
+                  <div>
+                      <label for="dni" class="block mb-2 text-sm font-medium text-gray-900">Número de DNI <span class="text-xs">*opcional</span></label>
+                      <input formControlName="dni" type="number" name="dni" id="dni"  class="block w-full p-2.5  text-sm font-bold  rounded-lg bg-white text-gray-900  focus:border-rojo-hover border-2 outline-none placeholder:text-gray-400 placeholder:font-extralight" placeholder="Tu número de DNI" >
+                  </div>
+                  <div>
+                      <label for="contacto" class="block mb-2 text-sm font-medium text-gray-900">Número de celular</label>
+                      <input formControlName="contacto" type="number" name="contacto" id="contacto"  class="block w-full p-2.5  text-sm font-bold  rounded-lg bg-white text-gray-900  focus:border-rojo-hover border-2 outline-none placeholder:text-gray-400 placeholder:font-extralight" placeholder="Tu número de celular por Ejemplo: 987654321" required>
+                  </div>
+                  <button type="submit" [disabled]="miFormulario.invalid" id="enviarPedido" class="w-full text-white bg-rojo hover:bg-rojo-hover font-medium rounded-lg text-sm px-5 py-2.5 text-center">Enviar Pedido</button>
+                  
+              </form>
+              
+            </div>
+          </div> 
+          
+        }
+
+      </div>
+    </div>
+  </div>
+</div>

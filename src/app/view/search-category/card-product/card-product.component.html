@@ -1,0 +1,39 @@
+<div class="rounded-md outline-1 outline outline-gray-200 shadow-sm bg-white overflow-hidden max-w-52">
+  <div class="h-max w-full border-gray-200 border-b">
+    <div routerLink="/producto/{{getSlug(producto?.nombre)}}" class="cursor-pointer">
+      <img class="w-full object-contain aspect-square" [src]="selectedUrl" [alt]="producto?.nombre" />
+    </div>
+  </div>
+  <div class="p-3">
+    <p class="text-sm font-medium leading-none h-[43px] text-gray-900" style="display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      line-clamp: 3;
+      overflow: hidden;">
+      {{ producto?.nombre }}
+    </p>
+
+    <div class="mt-2 flex items-center gap-1">
+      <p class="text-sm font-medium text-rojo">(<span class="text-gray-900">{{ producto?.stock }}</span>)</p>
+      <p class="text-sm font-medium text-rojo">disponibles</p>
+    </div>
+
+    <div class="mt-2 flex items-center justify-between gap-4">
+      <p class="text-xl font-semibold leading-tight text-rojo">
+        <span class="mr-0.5">S<span class="inline-block -rotate-12 -ml-0.5">&frasl;</span></span>
+        <span>{{ producto?.precio| number:'1.2-2' }}</span>
+      </p>
+    </div>
+
+    <label for="quantity-input" class="my-2 text-xs font-extralight text-rojo flex items-center gap-1">
+      Agregar al <app-icon-cart class="h-5"></app-icon-cart>
+    </label>
+
+    <app-buttons-card 
+      [cantidad]="cantidadActual" 
+      (cantidadCambiada)="addToCart($event)" 
+      [stock]="producto?.stock">
+    </app-buttons-card>
+
+  </div>
+</div>

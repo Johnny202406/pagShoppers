@@ -1,52 +1,263 @@
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    Código
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Nombre
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Opciones
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="bg-white border-b border-gray-200">
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    UTL001
-                </td>
-                <td class="px-6 py-4">
-                    Lápiz HB
-                </td>
-                <td class="px-6 py-4">
-                    <a href="#" class="font-medium text-blue-600 hover:underline">Ver imágenes</a>
-                </td>
-            </tr>
-            <tr class="bg-white border-b border-gray-200">
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    UTL002
-                </td>
-                <td class="px-6 py-4">
-                    Cuaderno rayado
-                </td>
-                <td class="px-6 py-4">
-                    <a href="#" class="font-medium text-blue-600 hover:underline">Ver imágenes</a>
-                </td>
-            </tr>
-            <tr class="bg-white border-b border-gray-200">
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    UTL003
-                </td>
-                <td class="px-6 py-4">
-                    Estuche de marcadores
-                </td>
-                <td class="px-6 py-4">
-                    <a href="#" class="font-medium text-blue-600 hover:underline">Ver imágenes</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div class=" overflow-x-auto h-full  w-full flex flex-nowrap gap-2 ">
+  <div class=" shadow-md sm:rounded-lg max-w-2xl flex-none">
+      <div class="flex items-center justify-between  w-full flex-wrap  py-4 bg-white px-2 gap-2">
+          <p-button label="Agregar " (onClick)="showDialog()"/>
+          <p-select 
+          [options]="categorias" 
+          [(ngModel)]="selectedCategory" 
+          optionLabel="nombre" 
+          [filter]="true" 
+          filterBy="nombre" 
+          [showClear]="true" 
+          placeholder="Selecciona una categoría" 
+          class="w-64">
+
+          <ng-template #selectedItem let-selectedOption>
+              <div class="flex items-center gap-2 ">
+                  <div class="truncate">{{ selectedOption.nombre }}</div>
+              </div>
+          </ng-template>
+
+          <ng-template let-category #item>
+              <div class="flex items-center gap-2">
+                  <div>{{ category.nombre }}</div>
+              </div>
+          </ng-template>
+          </p-select>
+          <p-select 
+          [options]="marcas" 
+          [(ngModel)]="selectedMarca" 
+          optionLabel="nombre" 
+          [filter]="true" 
+          filterBy="nombre" 
+          [showClear]="true" 
+          placeholder="Selecciona una marca" 
+          class="w-64" >
+
+          <ng-template #selectedItem let-selectedOption>
+              <div class="flex items-center gap-2 ">
+                  <div class="truncate">{{ selectedOption.nombre }}</div>
+              </div>
+          </ng-template>
+
+          <ng-template let-category #item>
+              <div class="flex items-center gap-2">
+                  <div>{{ category.nombre }}</div>
+              </div>
+          </ng-template>
+          </p-select>
+          <p-floatlabel variant="on">
+            <input pInputText id="on_label" [(ngModel)]="inputValue" classs="w-64" autocomplete="off" />
+            <label for="on_label">Busqueda por codigo o nombre</label>
+          </p-floatlabel>
+          <p-button label="Buscar" severity="danger" (click)="search()" [rounded]="true" />
+      </div>
+      @if (products.length>0) {
+      <p-table #dt
+          showGridlines 
+          [value]="products" 
+          [tableStyle]="{'max-width': '100%'}" 
+          [rows]="pageSize" 
+          [paginator]="true"  
+          [rowsPerPageOptions]="[5, 10, 15]"  
+          [totalRecords]="totalRecords" 
+          (onLazyLoad)="loadCustomers($event)"
+
+          [lazy]="true"
+        >
+    
+    <ng-template pTemplate="header">
+      <tr>
+        <th  style="width:15%">
+          Codigo 
+        </th>
+        <th  style="width:60%">
+          Nombre 
+        </th>
+        <th style="width:5%">
+          Editar
+        </th>
+        <th style="width:5%">
+          Imagenes
+        </th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-product>
+      <tr>
+        <td>{{ product.codigo }}</td>
+        <td>{{ product.nombre }}</td>
+        <td>
+          <div class="text-rojo cursor-pointer flex justify-center" (click)="editProduct(product)">
+            <i class="pi pi-file-edit" style="font-size:1.25rem;font-weight:bolder;"></i>
+          </div>
+        </td>
+        <td>
+          <div class="text-rojo cursor-pointer flex justify-center" (click)="verImg(product.id)">
+            <i class="pi pi-images" style="font-size:1.25rem;font-weight:bolder;"></i>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+      </p-table>
+    }@else {
+      <p class="px-2 py-4">No hay registros de productos...</p>
+    }
+
+  </div>
+
+
+  <div class="card relative">
+    
+    @if (spinner) {
+      <div class="absolute w-full h-full z-50 flex justify-center items-center bg-gray-800 bg-opacity-90">
+        <p-progress-spinner ariaLabel="loading" />
+      </div>
+    }
+    
+
+    <p-toast  />
+    @if (productoRefer) {
+    <p-fileupload #fileUploader name="myfile[]" url="https://www.primefaces.org/cdn/api/upload.php" [multiple]="true" accept="image/*" [maxFileSize]="maxFileSize"  (onSelect)="onSelectedFiles($event)">
+        <ng-template #header let-files let-uploadedFiles="uploadedFiles" let-chooseCallback="chooseCallback" let-clearCallback="clearCallback" let-uploadCallback="uploadCallback">
+            <div class="flex flex-wrap justify-between items-center flex-1 gap-4">
+                <h3>{{productoRefer.nombre}}</h3>
+                <div class="flex gap-2">
+                    <p-button (onClick)="choose($event, chooseCallback)" icon="pi pi-images" [rounded]="true" [outlined]="true" [disabled]="showProgressBar()[1]>=maxFiles ||!productoRefer"/>
+                    <p-button (onClick)="uploadImgs()" icon="pi pi-cloud-upload" [rounded]="true" [outlined]="true" severity="success" [disabled]="!files || files.length === 0" />
+                    <p-button (onClick)="clearCallbackMio()" icon="pi pi-times" [rounded]="true" [outlined]="true" severity="danger" [disabled]="!files || files.length === 0" />
+                </div>
+                <p-progressbar 
+                  [value]="showProgressBar()[0]" 
+                  [showValue]="true" 
+                  class="w-full" 
+                  styleClass="md:w-20rem h-1 w-full md:ml-auto"
+                >
+                  <span class="whitespace-nowrap">{{ showProgressBar()[1] }}/{{ maxFiles }} imágenes</span>
+                </p-progressbar>
+
+            </div>
+        </ng-template>
+        <ng-template #content let-files let-uploadedFiles="uploadedFiles" let-removeFileCallback="removeFileCallback" let-removeUploadedFileCallback="removeUploadedFileCallback">
+            <div class="flex flex-col gap-8 pt-4">
+                <div *ngIf="files?.length > 0">
+                    <h5>Pendiente</h5>
+                    <div class="flex flex-wrap gap-4">
+                        <div *ngFor="let file of files; let i = index" class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
+                            <div>
+                                <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
+                            </div>
+                            <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
+                            <div>{{ formatSize(file.size) }}</div>
+                            <p-badge value="Pending" severity="warn" />
+                            <p-button icon="pi pi-times" (click)="onRemoveTemplatingFile($event, file, removeFileCallback, i)" [outlined]="true" [rounded]="true" severity="danger" />
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="uploadedFiles?.length > 0">
+                    <h5>Completado</h5>
+                    <div class="flex flex-wrap gap-4">
+                        <div *ngFor="let file of uploadedFiles; let i = index" class="card m-0 px-12 flex flex-col border border-surface items-center gap-4">
+                            <div>
+                                <img role="presentation" [alt]="file.url" [src]="file.url" width="100" height="50" />
+                            </div>
+                            <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.url }}</span>
+                        
+                            <p-badge value="Completed" class="mt-4" severity="success" />
+                            <p-button icon="pi pi-times" (onClick)="removeFromCloudinaryAndBd(file.id)" [outlined]="true" [rounded]="true" severity="danger" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template #file></ng-template>
+        <ng-template #empty>
+            <div class="flex items-center justify-center flex-col">
+                <i class="pi pi-cloud-upload !border-2 !rounded-full !p-8 !text-4xl !text-muted-color"></i>
+                <p class="mt-6 mb-0">Suba imágenes arrastrando.</p>
+            </div>
+        </ng-template>
+    </p-fileupload>
+  }@else{
+
+  } 
+  </div>
 </div>
+
+<!-- MODAL -->
+<p-dialog [header]="productId?'Actualizar Producto':'Crear Producto'" [position]="position" [modal]="true" [(visible)]="visibleModal" [style]="{ width: '25rem',height:'auto' }">
+  <form [formGroup]="miFormulario" (ngSubmit)="operacionesProducto()">
+    
+    <!-- Código -->
+    <div class="flex items-center gap-4 mb-4">
+      <label for="codigo" class="font-semibold w-24">Código</label>
+      <input pInputText type="text" id="codigo" formControlName="codigo" class="flex-auto" />
+      
+    </div>
+    <small *ngIf="miFormulario.get('codigo')?.invalid && miFormulario.get('codigo')?.touched" class="text-red-500">
+        El código es obligatorio y debe tener menos de 50 caracteres.
+      </small>
+
+    <!-- Nombre -->
+    <div class="flex items-center gap-4 mb-4">
+      <label for="nombre" class="font-semibold w-24">Nombre</label>
+      <input pInputText type="text" id="nombre" formControlName="nombre" class="flex-auto" />
+      
+    </div>
+    <small *ngIf="miFormulario.get('nombre')?.invalid && miFormulario.get('nombre')?.touched" class="text-red-500">
+        El nombre es obligatorio y debe tener menos de 255 caracteres.
+    </small>
+
+    <!-- Precio -->
+    <div class="flex items-center gap-4 mb-4">
+      <label for="precio" class="font-semibold w-24">Precio</label>
+      <input pInputText type="number" id="precio" formControlName="precio" class="flex-auto" />
+      <small *ngIf="miFormulario.get('precio')?.invalid && miFormulario.get('precio')?.touched" class="text-red-500">
+        El precio es obligatorio y debe ser un número positivo.
+      </small>
+    </div>
+
+    <!-- Stock -->
+    <div class="flex items-center gap-4 mb-4">
+      <label for="stock" class="font-semibold w-24">Stock</label>
+      <input pInputText type="number" id="stock" formControlName="stock" class="flex-auto" />
+      
+    </div>
+    <small *ngIf="miFormulario.get('stock')?.invalid && miFormulario.get('stock')?.touched" class="text-red-500">
+        El stock es obligatorio y debe ser un número positivo.
+      </small>
+
+    <!-- Detalle -->
+    <div class="flex  items-center gap-4 mb-4">
+      <label for="detalle" class="font-semibold w-24">Detalle</label>
+      <textarea pTextarea pSize="large" id="detalle" formControlName="detalle" rows="3"></textarea>
+      
+    </div>
+    <small *ngIf="miFormulario.get('detalle')?.invalid && miFormulario.get('detalle')?.touched" class="text-red-500">
+        El detalle puede tener un máximo de 500 caracteres.
+      </small>
+
+    <!-- Marca -->
+    <div class="flex flex-col gap-4 mb-4">
+      <label for="marca" class="font-semibold w-24 text-nowrap">Marca</label>
+      <p-select [options]="marcas" id="marca" [checkmark]="true" [filter]="true" 
+          filterBy="nombre"  optionLabel="nombre" [showClear]="true" placeholder="Selecciona" class="w-full md:w-48" formControlName="marca" />
+    
+    </div>
+
+    <!-- Categoria -->
+    <div class="flex flex-col gap-4 mb-4">
+      <label for="categoria" class="font-semibold w-24 text-nowrap">Categoria</label>
+      <p-select [options]="categorias" id="categoria" [checkmark]="true" [filter]="true" 
+          filterBy="nombre"  optionLabel="nombre" [showClear]="true" placeholder="Selecciona" class="w-full md:w-48" formControlName="categoria" />
+    
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end gap-2  bottom-4 right-4">
+      <p-button label="Cancelar" severity="secondary" (click)="showDialog()" />
+      <p-button [label]="productId?'Actualizar':'Crear'" [type]="'submit'" [disabled]="miFormulario.invalid"></p-button>
+    </div>
+  </form>
+</p-dialog>

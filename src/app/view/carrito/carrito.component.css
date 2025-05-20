@@ -1,0 +1,11 @@
+#sistem[disabled]{
+    @apply bg-gray-400;
+}
+
+#whatsapp[disabled]{
+    @apply text-gray-400;
+}
+
+#enviarPedido[disabled]{
+    @apply bg-gray-400 hover:bg-gray-400
+}

@@ -1,0 +1,16 @@
+*{
+    --rojo:theme(colors.rojo);
+    --rojo-hover:theme(colors.rojo-hover);
+}
+
+.p-inputtext{
+    --p-inputtext-background:white;
+    --p-inputtext-border-color:var(--rojo);
+    --p-inputtext-hover-border-color:var(--rojo);
+    --p-inputtext-focus-border-color:var(--rojo);
+    --p-inputtext-color:black;
+    --p-inputtext-placeholder-color:gray;
+}
+
+
+

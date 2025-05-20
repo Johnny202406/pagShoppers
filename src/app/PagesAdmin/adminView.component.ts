@@ -48,9 +48,9 @@ import { environment as envs } from '@environnments/environment';
   
   `,
   styles: `
+    
     mat-toolbar{
       position:relative;
-      z-index:5;
       box-shadow:var(--mat-sys-level3) ;
     }
     .content{

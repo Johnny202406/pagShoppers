@@ -1,0 +1,24 @@
+
+<p-select 
+    [options]="categorias" 
+    [(ngModel)]="selectedCategory" 
+    optionLabel="nombre" 
+    [filter]="true" 
+    filterBy="nombre" 
+    [showClear]="true" 
+    placeholder="Selecciona una categoría" 
+    class="w-full lg:w-64" 
+    (onChange)="goCategory()">
+    
+    <ng-template #selectedItem let-selectedOption>
+        <div class="flex items-center gap-2 ">
+            <div class="truncate">{{ selectedOption.nombre }}</div>
+        </div>
+    </ng-template>
+    
+    <ng-template let-category #item>
+        <div class="flex items-center gap-2">
+            <div>{{ category.nombre }}</div>
+        </div>
+    </ng-template>
+</p-select>
