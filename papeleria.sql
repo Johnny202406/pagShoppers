@@ -7,25 +7,28 @@ USE papeleria;
 -- Tabla de marcas
 CREATE TABLE IF NOT EXISTS marcas (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL UNIQUE
+    nombre VARCHAR(255) NOT NULL UNIQUE,
+   habilitado TINYINT DEFAULT 1
 );
 
 -- Tabla de categorías
 CREATE TABLE IF NOT EXISTS categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL UNIQUE
+    nombre VARCHAR(255) NOT NULL UNIQUE,
+    habilitado TINYINT DEFAULT 1
 );
 
 -- Tabla de productos
 CREATE TABLE IF NOT EXISTS productos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    codigo VARCHAR(50) NOT NULL UNIQUE,   -- Código del producto
-    nombre VARCHAR(255) NOT NULL UNIQUE,  -- Nombre del producto
-    precio DECIMAL(10, 2) NOT NULL,       -- Precio del producto
-    stock INT DEFAULT 0,                  -- Stock disponible
-    detalle TEXT,                         -- Descripción más detallada
-    idmarca INT,                          -- Marca del producto
-    idcategoria INT,                      -- Categoría
+    codigo VARCHAR(50) NOT NULL UNIQUE,
+    nombre VARCHAR(255) NOT NULL UNIQUE,
+    precio DECIMAL(10, 2) NOT NULL,
+    stock INT DEFAULT 0,
+    detalle TEXT,
+    habilitado TINYINT DEFAULT 1,
+    idmarca INT,
+    idcategoria INT,
     FOREIGN KEY (idmarca) REFERENCES marcas(id),
     FOREIGN KEY (idcategoria) REFERENCES categorias(id)
 );
@@ -72,8 +75,12 @@ CREATE TABLE IF NOT EXISTS detalles_pedidos (
 -- Tabla de administradores
 CREATE TABLE IF NOT EXISTS administradores (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    dni VARCHAR(8) NOT NULL UNIQUE,
     nombre VARCHAR(255) NOT NULL,
-    contrasena VARCHAR(255) NOT NULL
+    apellido VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    contrasena VARCHAR(255) NOT NULL,
+    habilitado TINYINT DEFAULT 1
 );
 
 -- --- Índices (al final del script) ---
@@ -1068,5 +1075,6 @@ INSERT INTO estado_pedidos (nombre) VALUES
 ('Completado'),
 ('Cancelado');
 
-INSERT INTO administradores (nombre, contrasena) VALUES
-('admin', 'admin123')
+INSERT INTO administradores (dni, nombre, apellido, username, contrasena)
+VALUES ('12345678', 'Juan', 'Pérez', 'admin', 'admin123');
+

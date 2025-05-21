@@ -59,7 +59,7 @@ export class ProductAloneComponent {
               }
             });
           } else {
-            // this.router.navigate(['/']);
+            this.router.navigate(['/']);
           }
       })   
       }

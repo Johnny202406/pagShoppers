@@ -7,10 +7,13 @@ import { Observable, tap } from 'rxjs';
 export interface Categoria {
   id: number;
   nombre: string;
+  habilitado:boolean;
+
 }
 export interface Marca{
   id:number;
   nombre:string;
+  habilitado:boolean;
 }
 export interface Imagenes{
   id:number;
@@ -24,6 +27,7 @@ export interface Producto {
   precio: number;
   stock: number;
   detalle: string;
+  habilitado:boolean;
   categoria: Categoria;
   marca: Marca;
   imagenes:Imagenes[];
