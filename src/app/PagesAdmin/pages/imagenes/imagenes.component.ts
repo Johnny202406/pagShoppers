@@ -41,17 +41,24 @@ export class ImagenesComponent {
   inputValue?:string;
 
   categorias?: Categoria[] ;
+  categoriasHabilitadas:Marca[]=[];
+  categoriasParaFormulario:Marca[]=[]
   selectedCategory?: Categoria ;
 
-
   marcas?: Marca[] ;
+  marcasHabilitadas:Marca[]=[];
+  marcasParaFormulario:Marca[]=[]
   selectedMarca?: Marca ;
   ngOnInit() {
     this.dbService.getCategorias().subscribe((data) => {
       this.categorias = data;
+      this.categoriasHabilitadas = this.categorias.filter(m => m.habilitado);
+      this.categoriasParaFormulario=[...this.categoriasHabilitadas]
     })
     this.dbService.getMarcas().subscribe((data) => {
       this.marcas = data;
+      this.marcasHabilitadas = this.marcas.filter(m => m.habilitado);
+      this.marcasParaFormulario=[...this.marcasHabilitadas]
     })
     this.loadProducts()
     
@@ -127,6 +134,12 @@ noSoloEspacios(control: AbstractControl) {
 
   editProduct(product:Producto){
     this.productId=product.id
+    if (!this.marcasHabilitadas.some(m => m.id === product.marca.id)) {
+      this.marcasParaFormulario.push(product.marca);
+    }
+    if (!this.categoriasHabilitadas.some(c => c.id === product.categoria.id)) {
+      this.categoriasParaFormulario.push(product.categoria);
+    }
     this.miFormulario.patchValue({
       codigo:product.codigo,
       nombre: product.nombre,
@@ -148,6 +161,8 @@ noSoloEspacios(control: AbstractControl) {
 
   resetForm(){
     this.productId=undefined
+    this.marcasParaFormulario=[...this.marcasHabilitadas]
+    this.categoriasParaFormulario=[...this.categoriasHabilitadas]
     this.miFormulario.reset();
   }
 

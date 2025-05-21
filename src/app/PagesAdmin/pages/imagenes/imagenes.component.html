@@ -1,5 +1,6 @@
 <div class=" overflow-x-auto h-full  w-full flex flex-nowrap gap-2 ">
   <div class=" shadow-md sm:rounded-lg max-w-2xl flex-none">
+      
       <div class="flex items-center justify-between  w-full flex-wrap  py-4 bg-white px-2 gap-2">
           <p-button label="Agregar " (onClick)="showDialog()"/>
           <p-select 
@@ -241,7 +242,7 @@
     <!-- Marca -->
     <div class="flex flex-col gap-4 mb-4">
       <label for="marca" class="font-semibold w-24 text-nowrap">Marca</label>
-      <p-select [options]="marcas" id="marca" [checkmark]="true" [filter]="true" 
+      <p-select [options]="marcasParaFormulario" id="marca" [checkmark]="true" [filter]="true" 
           filterBy="nombre"  optionLabel="nombre" [showClear]="true" placeholder="Selecciona" class="w-full md:w-48" formControlName="marca" />
     
     </div>
@@ -249,7 +250,7 @@
     <!-- Categoria -->
     <div class="flex flex-col gap-4 mb-4">
       <label for="categoria" class="font-semibold w-24 text-nowrap">Categoria</label>
-      <p-select [options]="categorias" id="categoria" [checkmark]="true" [filter]="true" 
+      <p-select [options]="categoriasParaFormulario" id="categoria" [checkmark]="true" [filter]="true" 
           filterBy="nombre"  optionLabel="nombre" [showClear]="true" placeholder="Selecciona" class="w-full md:w-48" formControlName="categoria" />
     
     </div>

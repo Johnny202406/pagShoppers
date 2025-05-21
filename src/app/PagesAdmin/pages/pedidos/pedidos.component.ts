@@ -14,10 +14,12 @@ import { TableModule,Table} from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { environment } from '@environnments/environment';
 import { Dialog } from 'primeng/dialog';
+import { ToastModule } from 'primeng/toast';
+
 
 @Component({
   selector: 'app-pedidos',
-  imports: [Dialog,CommonModule,InputIconModule, IconFieldModule, InputTextModule, FloatLabelModule, FormsModule,Select,FormsModule,InputTextModule,ButtonModule,DatePicker,TableModule],
+  imports: [Dialog,CommonModule,InputIconModule, IconFieldModule, InputTextModule, FloatLabelModule, FormsModule,Select,FormsModule,InputTextModule,ButtonModule,DatePicker,TableModule,ToastModule],
   templateUrl: './pedidos.component.html',
   styleUrl: './pedidos.component.css',
   standalone:true,
@@ -102,8 +104,8 @@ export class PedidosComponent  implements OnInit{
   }
     
   actualizarPedido(){
-    if(!this.selectedPedidos) return alert("No hay pedidos seleccionados")
-    if(!this.estadoParaActualizarPedido) return alert("Estado no seleccionado")
+    if(!this.selectedPedidos) return this.messageService.add({ severity: 'warn', summary: 'Pedidos No seleccionados', detail: 'No hay pedidos seleccionados a los que actulizar estado' });
+    if(!this.estadoParaActualizarPedido) return this.messageService.add({ severity: 'warn', summary: 'Estado No Seleccionado', detail: 'El Estado no se encuentra seleccionado' });
     
     const obj={
       idestado:this.estadoParaActualizarPedido.id,
@@ -113,12 +115,22 @@ export class PedidosComponent  implements OnInit{
     }
     
     
-    this.dbService.actualizarPedidos(obj).subscribe(()=>{
-      this.loadPedidos()
-      this.showDialog()
-      this.selectedPedidos=[]
-      this.estadoParaActualizarPedido=undefined
-    })
+    this.dbService.actualizarPedidos(obj).subscribe({
+        next: () => {
+          this.loadPedidos()
+          this.showDialog()
+          this.selectedPedidos=[]
+          this.estadoParaActualizarPedido=undefined
+          
+          return this.messageService.add({ severity: 'success', summary: 'Pedido Actualizado', detail: 'Pedido actualizado con exito' });
+        },
+        error: () => {
+          return this.messageService.add({ severity: 'error', summary: 'Pedido Fallido', detail: 'Pedido no actualizado' });
+        },
+        complete:()=>{
+          
+        }
+      })
 
   }  
 
