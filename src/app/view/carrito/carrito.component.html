@@ -74,7 +74,7 @@
             </div>
   
             <div class="overflow-y-auto pr-2 w-full" >
-                <form class="space-y-4 md:space-y-6" (submit)="enviarPedido()" [formGroup]="miFormulario">
+                <form class="space-y-4 md:space-y-6" (submit)="enviar()" [formGroup]="miFormulario">
                   <div>
                       <label for="dni" class="block mb-2 text-sm font-medium text-gray-900">Número de DNI <span class="text-xs">*opcional</span></label>
                       <input formControlName="dni" type="number" name="dni" id="dni"  class="block w-full p-2.5  text-sm font-bold  rounded-lg bg-white text-gray-900  focus:border-rojo-hover border-2 outline-none placeholder:text-gray-400 placeholder:font-extralight" placeholder="Tu número de DNI" >
@@ -96,3 +96,5 @@
     </div>
   </div>
 </div>
+<p-toast />
+<p-confirmdialog key="positionDialog" [position]="position" />
