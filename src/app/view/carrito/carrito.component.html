@@ -24,7 +24,7 @@
             <ul role="list" class="-my-6 divide-y divide-gray-200 w-full block">
               @for (item of productosEnCarrito; track item) {
                 <app-cards-carrito 
-                  [item]="item" >
+                  [item]="item" (closeCart)="visible=false">
                 </app-cards-carrito>
                 } @empty {
                 <li class="text-gray-400 flex flex-col py-6 w-full items-center gap-1">

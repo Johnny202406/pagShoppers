@@ -43,12 +43,10 @@ export class ProductAloneComponent {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.nombre =this.dbService.urlOriginal(params['id']);
-      console.log(this.nombre);
 
       if (this.nombre) {
         this.dbService.getProductoString(this.nombre).subscribe((response) => {
-          // console.log(response);
-          
+ 
           this.producto = response;
           if (this.producto) {
             this.selectedImageUrl = this.producto?.imagenes?.[0]?.url || 'noImg.jpg';

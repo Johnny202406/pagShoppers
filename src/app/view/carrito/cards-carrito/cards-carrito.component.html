@@ -1,5 +1,5 @@
 <li   class="flex py-6 w-full items-center gap-1 " style="scroll-snap-align: center;">
-  <div routerLink="/producto/{{getSlug(item.producto.nombre)}}" class="cursor-pointer size-28 shrink-0 overflow-hidden rounded-md border border-gray-200">
+  <div (click)="irProducto(item.producto.nombre)"  class="cursor-pointer size-28 shrink-0 overflow-hidden rounded-md border border-gray-200">
     <img [src]="selectedUrl" [alt]="item.producto.nombre" class="size-full object-contain">
   </div>
 

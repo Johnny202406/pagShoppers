@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CarritoService, Carrito } from 'src/app/cart.service';
 import { ButtonsCardComponent } from '../../buttons-card/buttons-card.component';
 import { GetDataBaseService } from 'src/app/get-data-base.service';
@@ -30,6 +30,7 @@ export class CardsCarritoComponent implements OnInit, OnDestroy {
     private dbService: GetDataBaseService,
     private alertService: AlertService,
     private confirmService: ConfirmService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -72,6 +73,12 @@ export class CardsCarritoComponent implements OnInit, OnDestroy {
 
   getSlug(url: string): string {
     return this.dbService.urlBonita(url);
+  }
+  @Output() closeCart = new EventEmitter<void>();
+
+  irProducto(ruta:string){
+    this.router.navigate([`/producto/${this.getSlug(ruta)}`])
+    this.closeCart.emit()
   }
 
 

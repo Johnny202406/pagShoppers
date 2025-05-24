@@ -13,13 +13,7 @@ import { ConfirmPrimeNgComponent } from './confirm-prime-ng/confirm-prime-ng.com
 })
 export class AppComponent {
   title = 'pagShoppers';
-  // constructor(private router: Router) {
-  //   this.router.events.subscribe((event) => {
-  //     if (event instanceof NavigationEnd) {
-  //       window.scrollTo({ top: 0, behavior: 'smooth' }); 
-  //     }
-  //   });
-  // }
+ 
 
 
 }
