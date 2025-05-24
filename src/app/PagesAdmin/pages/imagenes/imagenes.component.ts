@@ -3,40 +3,49 @@ import { AbstractControl, FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { GetDataBaseService,Categoria ,Marca, Producto,Imagenes} from 'src/app/get-data-base.service';
+import { GetDataBaseService,Categoria ,Marca, Producto,Imagenes,Estados,Estado} from 'src/app/get-data-base.service';
 import { Router } from '@angular/router';
 import { TableModule,Table} from 'primeng/table';
 import { FloatLabel } from 'primeng/floatlabel';
 
 import { FileUploadModule } from 'primeng/fileupload';
-import { MessageService} from 'primeng/api';
 import { PrimeNG } from 'primeng/config';
 import { FileUpload } from 'primeng/fileupload';
 import { CommonModule } from '@angular/common';
 import { BadgeModule } from 'primeng/badge';
 import { ProgressBar } from 'primeng/progressbar';
-import { ToastModule } from 'primeng/toast';
+
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { Dialog } from 'primeng/dialog';
 import { FormControl, FormGroup, Validators,ReactiveFormsModule } from '@angular/forms';
 import { TextareaModule } from 'primeng/textarea';
+import { CheckboxModule } from 'primeng/checkbox';
+import { AlertService } from 'src/app/alert.service';
+import { ConfirmService } from 'src/app/confirm.service';
+
 
 @Component({
   selector: 'app-imagenes',
-  imports: [TextareaModule,Dialog,FormsModule,SelectModule,ReactiveFormsModule,InputTextModule,ButtonModule,TableModule,FloatLabel,FileUpload, ButtonModule, BadgeModule, ProgressBar, ToastModule, CommonModule,FileUploadModule,ProgressSpinnerModule,ProgressSpinner],
+  imports: [CheckboxModule,TextareaModule,Dialog,FormsModule,SelectModule,ReactiveFormsModule,InputTextModule,ButtonModule,TableModule,FloatLabel,FileUpload, ButtonModule, BadgeModule, ProgressBar, CommonModule,FileUploadModule,ProgressSpinnerModule,ProgressSpinner],
   templateUrl: './imagenes.component.html',
   styleUrl: './imagenes.component.css',
   standalone: true,
-  providers: [MessageService]
 })
 
 export class ImagenesComponent {
-  constructor(private router: Router,private dbService: GetDataBaseService,private config: PrimeNG, private messageService: MessageService,) {
-    
-  }
- 
+  constructor(
+    private router: Router,
+    private dbService: GetDataBaseService,
+    private config: PrimeNG, 
+    private alertService: AlertService,
+    private confirmService: ConfirmService,
 
+  ) {}
+ 
+  Estados=Estados
+  selectedEstado?:Estado
+  
   @ViewChild('dt') table!: Table;
   inputValue?:string;
 
@@ -61,42 +70,61 @@ export class ImagenesComponent {
       this.marcasParaFormulario=[...this.marcasHabilitadas]
     })
     this.loadProducts()
-    
-    
   }
 
-products: Producto[] = [];
-totalRecords: number = 0;
-pageSize:number=5
-currentPage: number = 1;
+  products: Producto[] = [];
+  totalRecords: number = 0;
+  pageSize:number=5
+  currentPage: number = 1;
 
-search() {
-  this.currentPage = 1; // Siempre volver a la primera página en una nueva búsqueda
-  if (this.table) {
-    this.table.first = 0; // Esto resetea visualmente el paginador
+  search() {
+    this.currentPage = 1; // Siempre volver a la primera página en una nueva búsqueda
+    if (this.table) {
+      this.table.first = 0; // Esto resetea visualmente el paginador
+    }
+    this.loadProducts();
   }
-  this.loadProducts();
-}
 
-loadCustomers(event: any) {
-  if (event) {
-    this.pageSize = event.rows ?? 5;
-    this.currentPage = Math.floor((event.first ?? 0) / this.pageSize) + 1;
+  loadCustomers(event: any) {
+    if (event) {
+      this.pageSize = event.rows ?? 5;
+      this.currentPage = Math.floor((event.first ?? 0) / this.pageSize) + 1;
+    }
+    this.loadProducts();
   }
-  this.loadProducts();
-}
 
 
-loadProducts() {
-  const categoryId = this.selectedCategory ? this.selectedCategory.id : undefined;
-  const brandId = this.selectedMarca ? this.selectedMarca.id : undefined;
-  const search = this.inputValue || '';
+  loadProducts() {
+    const categoryId = this.selectedCategory ? this.selectedCategory.id : undefined;
+    const brandId = this.selectedMarca ? this.selectedMarca.id : undefined;
+    const search = this.inputValue || '';
+    const estado = this.selectedEstado?.value ;
 
-  this.dbService.getProductos(this.currentPage, this.pageSize, search, categoryId, brandId)
-    .subscribe((response) => {
-      this.products = response.productos;
-      this.totalRecords = response.totalRecords;
-    });
+    this.dbService.getProductos(this.currentPage, this.pageSize, search, categoryId, brandId,estado)
+      .subscribe((response) => {
+        this.products = response.productos;
+        this.totalRecords = response.totalRecords;
+      });
+  }
+
+// HABILITAR DESHABILITAR
+habilitarDeshabilitar(product:Producto){
+  const nuevoEstado:boolean=!product.habilitado
+  const txt=nuevoEstado?"Habilitado":"Deshabilitado"
+  const txt2=nuevoEstado?"Habilitar":"Deshabilitar"
+  const severity=nuevoEstado?"success":"info"
+
+  this.dbService.habilitarDeshabilitar("productos",product.id,nuevoEstado).subscribe({
+    next: () => {
+      this.loadProducts()
+    },
+    error: (error) => {
+      this.alertService.show({severity:'error', summary:`Error al ${txt2} producto`, detail:`Hubo un problema: ${error.message}`});
+    },
+    complete: () => {
+      this.alertService.show({severity, summary:`Producto: ${product.nombre}`, detail:`El producto ha sido ${txt} correctamente.`});
+    }
+  })
 }
 
 // EDITAR PRODUCTOS Y AGREGAR
@@ -124,8 +152,8 @@ noSoloEspacios(control: AbstractControl) {
       Validators.min(0)
     ]),
     detalle: new FormControl(''), 
+    categoria: new FormControl<Categoria | undefined>(undefined, Validators.required),
     marca: new FormControl<Marca | undefined>(undefined, Validators.required), 
-    categoria: new FormControl<Categoria | undefined>(undefined, Validators.required) 
   });
 
   position:'left' | 'right' | 'top' | 'bottom' | 'center' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright'="top"
@@ -135,10 +163,11 @@ noSoloEspacios(control: AbstractControl) {
   editProduct(product:Producto){
     this.productId=product.id
     if (!this.marcasHabilitadas.some(m => m.id === product.marca.id)) {
-      this.marcasParaFormulario.push(product.marca);
+      this.marcasParaFormulario = [product.marca,...this.marcasParaFormulario, ];
     }
     if (!this.categoriasHabilitadas.some(c => c.id === product.categoria.id)) {
-      this.categoriasParaFormulario.push(product.categoria);
+      this.categoriasParaFormulario = [product.categoria,...this.categoriasParaFormulario, ];
+
     }
     this.miFormulario.patchValue({
       codigo:product.codigo,
@@ -146,8 +175,8 @@ noSoloEspacios(control: AbstractControl) {
       precio: product.precio,
       stock: product.stock,
       detalle: product.detalle,
-      marca: product.marca ,     
       categoria: product.categoria, 
+      marca: product.marca ,     
     });
     this.toogleDialog()
   }
@@ -191,11 +220,11 @@ noSoloEspacios(control: AbstractControl) {
   request.subscribe({
     next: () => {
       const mensaje = this.productId ? 'actualizado' : 'creado';
-      this.showMessage('success', `Producto ${mensaje}`, `El producto ha sido ${mensaje} correctamente.`);
+      this.alertService.show({severity:'success', summary:`Producto ${mensaje}`, detail:`El producto ha sido ${mensaje} correctamente.`});
     },
     error: (error) => {
       const accion = this.productId ? 'Actualizar' : 'Crear';
-      this.showMessage('error', `Error al ${accion} producto`, `Hubo un problema: ${error.message}`);
+      this.alertService.show({severity:'error', summary:`Error al ${accion} producto`, detail:`Hubo un problema: ${error.message}`});
     },
     complete: () => {
       this.loadProducts()
@@ -226,8 +255,8 @@ noSoloEspacios(control: AbstractControl) {
         this.reset(response)
       },
       error: (error) => {
-        this.showMessage('error','Error al ver imagen',`No se puede visualizar las imagenes: ${error.message}`
-        );
+        this.alertService.show({severity:'error',summary:'Error al ver imagen',detail:`No se puede visualizar las imagenes: ${error.message}`
+      });
       },
       complete:()=>{
         this.toogleSpinner()
@@ -243,20 +272,20 @@ noSoloEspacios(control: AbstractControl) {
     this.fileUploader.uploadedFiles = [...this.productoRefer.imagenes];
     
   }
-  removeFromCloudinaryAndBd(id: number) {
-    if (!confirm("¿Está seguro de eliminar la imagen?")) return
+  async removeFromCloudinaryAndBd(id: number) {
+    if (! await this.confirmService.confirm("¿Está seguro de eliminar la imagen?")) return 
 
     this.toogleSpinner()
-    
+  
     this.dbService.eliminarImagen(id).subscribe({
       next: (response) => {
         this.reset(response)
-        this.showMessage('info','Imagen eliminada','La imagen ha sido eliminada correctamente.'
-        );
+        this.alertService.show({severity:'info',summary:'Imagen eliminada',detail:'La imagen ha sido eliminada correctamente.'
+      });
       },
       error: (error) => {
-        this.showMessage('error','Error al eliminar imagen',`Hubo un problema al eliminar la imagen: ${error.message}`
-        );
+        this.alertService.show({severity:'error',summary:'Error al eliminar imagen',detail:`Hubo un problema al eliminar la imagen: ${error.message}`
+      });
       },
       complete:()=>{
         this.toogleSpinner()
@@ -273,11 +302,11 @@ noSoloEspacios(control: AbstractControl) {
       
       
       this.files =[...this.fileUploader.files]
-      this.showMessage(
-        'info', 
-        'Imagen removida', 
-        'La imagen en memoria ha sido removida con exito.'
-      );
+      this.alertService.show({
+        severity:'info', 
+        summary:'Imagen removida', 
+        detail:'La imagen en memoria ha sido removida con exito.'
+      });
   }
   
 
@@ -285,22 +314,22 @@ noSoloEspacios(control: AbstractControl) {
     clear();
 
     this.files = [];
-    this.showMessage(
-      'info', 
-      'Imagenes removidas.', 
-      'Todas las imagenes en memoria han sido removidas.'
-    )
+    this.alertService.show({
+      severity:'info', 
+      summary:'Imagenes removidas.', 
+      detail:'Todas las imagenes en memoria han sido removidas.'
+    })
 }
 
     onSelectedFiles(event: { files: File[]; currentFiles: File[] }) {
       const remainingSlots = this.maxFiles - this.showProgressBar()[1]
   
       if (remainingSlots <= 0) {
-          this.showMessage(
-              'error', 
-              'Límite de imágenes', 
-              `Máximo permitido: ${this.maxFiles} imágenes.`
-          );
+          this.alertService.show({
+              severity:'error', 
+              summary:'Límite de imágenes', 
+              detail:`Máximo permitido: ${this.maxFiles} imágenes.`
+          });
           this.fileUploader.files = [...this.files];
           return;
       }
@@ -318,19 +347,19 @@ noSoloEspacios(control: AbstractControl) {
       );
   
       if (invalidFiles > 0) {
-          this.showMessage(
-              'error', 
-              'Archivo demasiado grande', 
-              `Máximo tamaño permitido: ${(this.maxFileSize / (1024 * 1024)).toFixed(2)} MB.`
-          );
+          this.alertService.show({
+              severity:'error', 
+              summary:'Archivo demasiado grande', 
+              detail:`Máximo tamaño permitido: ${(this.maxFileSize / (1024 * 1024)).toFixed(2)} MB.`
+          });
       }
   
       if (validFiles.length > remainingSlots) {
-          this.showMessage(
-              'warn', 
-              'Algunas imágenes no se agregaron', 
-              `Solo se permiten ${remainingSlots} imágenes más.`
-          );
+          this.alertService.show({
+              severity:'warn', 
+              summary:'Algunas imágenes no se agregaron', 
+              detail:`Solo se permiten ${remainingSlots} imágenes más.`
+          });
       }
   
       const filesToAdd = validFiles.slice(0, remainingSlots);
@@ -357,12 +386,12 @@ noSoloEspacios(control: AbstractControl) {
     async uploadImgs() {
 
       if (!this.productoRefer) {
-        this.showMessage('error', 'Producto no seleccionado', 'No se ha seleccionado un producto para asociar las imágenes.');
+        this.alertService.show({severity:'error', summary:'Producto no seleccionado', detail:'No se ha seleccionado un producto para asociar las imágenes.'});
         return;
       }
     
       if (this.files.length === 0) {
-        this.showMessage('warn', 'Sin archivos', 'No hay imágenes para subir.');
+        this.alertService.show({severity:'warn', summary:'Sin archivos', detail:'No hay imágenes para subir.'});
         return;
       }
     
@@ -379,12 +408,11 @@ noSoloEspacios(control: AbstractControl) {
         
         next: (response) => {
           this.reset(response)
-          this.showMessage('success', 'Subida exitosa', 'Las imágenes se han subido correctamente.');
+          this.alertService.show({severity:'success', summary:'Subida exitosa', detail:'Las imágenes se han subido correctamente.'});
     
         },
-        error: (err: any) => {
-          console.error('Error al subir imágenes', err);
-          this.showMessage('error', 'Error al subir imágenes', 'Hubo un problema al subir las imágenes.');
+        error: (error) => {
+          this.alertService.show({severity:'error', summary:'Error al subir imágenes', detail:'Hubo un problema al subir las imágenes.'});
         },
         complete:()=>{
           this.toogleSpinner()
@@ -409,20 +437,13 @@ noSoloEspacios(control: AbstractControl) {
     clearCallbackMio() {
       this.files = [];
       this.fileUploader.files = [];
-      this.showMessage(
-        'info', 
-        'Imagenes removidas.', 
-        'Todas las imagenes en memoria han sido removidas.'
-      )
+      this.alertService.show({
+        severity:'info', 
+        summary:'Imagenes removidas.', 
+        detail:'Todas las imagenes en memoria han sido removidas.'
+      })
     }
-    showMessage(severity: string, summary: string, detail: string, life: number = 3000) {
-      this.messageService.add({
-        severity: severity,
-        summary: summary,
-        detail: detail,
-        life: life
-      });
-    }
+  
     
 
 }

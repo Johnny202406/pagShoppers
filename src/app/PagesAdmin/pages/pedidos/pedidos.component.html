@@ -16,9 +16,11 @@
         <div class="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-white px-2 gap-2">
             <div class="flex items-center gap-2">
                 <p-datepicker [(ngModel)]="date"  [maxDate]="maxDate" [readonlyInput]="true" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" class="w-48" dateFormat="dd/mm/yy" placeholder="Ingrese fecha" [showButtonBar]="true"/>
-    
-                <p-select [options]="estados" [(ngModel)]="selectedEstado" [checkmark]="true" optionLabel="nombre" [showClear]="true" placeholder="Selecciona" class="w-full md:w-48" />
-            </div>
+                <p-floatlabel variant="on">
+                <p-select [options]="estados" [(ngModel)]="selectedEstado" [checkmark]="true" optionLabel="nombre" [showClear]="true"  class="w-full md:w-48" />
+                  <label for="on_label">Estados de pedido</label>
+                </p-floatlabel>
+              </div>
             <div class="flex items-center gap-2">
                 <p-floatlabel variant="on">
                     <input pInputText id="on_label" [(ngModel)]="value" autocomplete="off"  />
@@ -145,10 +147,9 @@
 
         <div class="flex justify-end gap-2 absolute bottom-4 right-4">
             <p-button label="Cancelar" severity="secondary" (click)="showDialog()" />
-            <p-button label="Actualizar" (click)="actualizarPedido()" />
+            <p-button label="Actualizar" (click)="actualizarPedido()" [disabled]="!selectedPedidos.length||!estadoParaActualizarPedido" />
         </div>
 </p-dialog>
-<p-toast />
 
 
 

@@ -6,7 +6,7 @@
         <div class="flex-1 flex flex-col px-4 py-6 sm:px-6 gap-8">
           <div class="flex items-start justify-between">
             <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">
-              Carrito de Compras
+              Carrito de Pedidos
             </h2>
             @if (productosEnCarrito.length>0) {
               <i class="pi pi-eraser text-gray-950 cursor-pointer" (click)="clearCart()" style="font-size: 1.25rem;"></i>
@@ -79,10 +79,16 @@
                       <label for="dni" class="block mb-2 text-sm font-medium text-gray-900">Número de DNI <span class="text-xs">*opcional</span></label>
                       <input formControlName="dni" type="number" name="dni" id="dni"  class="block w-full p-2.5  text-sm font-bold  rounded-lg bg-white text-gray-900  focus:border-rojo-hover border-2 outline-none placeholder:text-gray-400 placeholder:font-extralight" placeholder="Tu número de DNI" >
                   </div>
+                   <small *ngIf="miFormulario.get('dni')?.invalid && miFormulario.get('dni')?.touched" class="text-red-500">
+                    El dni es opcional y debe ser un número de 8 dígitos.
+                  </small>
                   <div>
                       <label for="contacto" class="block mb-2 text-sm font-medium text-gray-900">Número de celular</label>
                       <input formControlName="contacto" type="number" name="contacto" id="contacto"  class="block w-full p-2.5  text-sm font-bold  rounded-lg bg-white text-gray-900  focus:border-rojo-hover border-2 outline-none placeholder:text-gray-400 placeholder:font-extralight" placeholder="Tu número de celular por Ejemplo: 987654321" required>
                   </div>
+                  <small *ngIf="miFormulario.get('contacto')?.invalid && miFormulario.get('contacto')?.touched" class="text-red-500">
+                    El número es obligatorio y debe ser un número de 9 dígitos.
+                  </small>
                   <button type="submit" [disabled]="miFormulario.invalid" id="enviarPedido" class="w-full text-white bg-rojo hover:bg-rojo-hover font-medium rounded-lg text-sm px-5 py-2.5 text-center">Enviar Pedido</button>
                   
               </form>
@@ -96,5 +102,3 @@
     </div>
   </div>
 </div>
-<p-toast />
-<p-confirmdialog key="positionDialog" [position]="position" />

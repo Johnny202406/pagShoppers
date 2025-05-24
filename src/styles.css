@@ -84,4 +84,6 @@
   --p-progressspinner-color-4: #ff9800; /* Color 4 del spinner */
 }
 
-
+.p-floatlabel{
+  --p-floatlabel-color:white;
+}

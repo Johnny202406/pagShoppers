@@ -2,6 +2,25 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { environment as envs } from '@environnments/environment';
+
+export interface Estado{
+  label:string,
+  value:boolean,
+}
+export const Estados:Estado[]=[
+  {label:"Habilitado",value:true},
+  {label:"Deshabilitado",value:false},
+]
+export interface Administrador {
+  id: number;
+  dni: string;
+  nombre: string;
+  apellido: string;
+  username: string;
+  contrasena: string;
+  habilitado: boolean;
+}
 
 
 export interface Categoria {
@@ -95,7 +114,7 @@ export interface CategoriasResponse {
   providedIn: 'root'
 })
 export class GetDataBaseService {
-  private apiUrl = 'http://localhost:3000/';
+  private apiUrl = envs.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -130,7 +149,7 @@ export class GetDataBaseService {
     return this.marcas
   }
 
-  getProductos(page: number = 1,pageSize: number = 5, search: string = '',  categoryId?: number, brandId?: number): Observable<ProductosResponse> {
+  getProductos(page: number = 1,pageSize: number = 5, search: string = '',  categoryId?: number, brandId?: number,estado?:boolean): Observable<ProductosResponse> {
     let params: any = {
       page: page,
       pageSize: pageSize,
@@ -143,6 +162,9 @@ export class GetDataBaseService {
   
     if (brandId !== undefined && brandId !== null) {
       params.brandId = brandId;
+    }
+    if (estado !== undefined && estado !== null) {
+      params.estado = estado;
     }
   
     return this.http.get<ProductosResponse>(this.apiUrl + 'productos', { params });
@@ -225,12 +247,13 @@ export class GetDataBaseService {
   }
 
   // MARCAS
-  obtenerMarcasEnTabla(page: number = 1,pageSize: number = 5,search?:string){
+  obtenerMarcasEnTabla(page: number = 1,pageSize: number = 5,search?:string,estado?:boolean){
     let params: any = {
       page,
       pageSize,
     };
     if (search) params.search=search
+    if (estado!==undefined) params.estado=estado
     return this.http.get<MarcasResponse>(this.apiUrl + 'marcas/tabla', { params});
   }
   crearMarca(marca:any){
@@ -241,12 +264,13 @@ export class GetDataBaseService {
   }
   
   // CATEGORIAS
-  obtenerCategoriasEnTabla(page: number = 1,pageSize: number = 5,search?:string){
+  obtenerCategoriasEnTabla(page: number = 1,pageSize: number = 5,search?:string,estado?:boolean){
     let params: any = {
       page,
       pageSize,
     };
     if (search) params.search=search
+    if (estado!==undefined) params.estado=estado
     return this.http.get<CategoriasResponse>(this.apiUrl + 'categorias/tabla',  {params});
 
   }
@@ -255,6 +279,13 @@ export class GetDataBaseService {
   }
   actualizarCategoria(id:any,categoria:any){
     return this.http.put<any>(`${this.apiUrl}categorias/edit/${id}`, categoria);
+  }
+
+  habilitarDeshabilitar(entidad:string,id:number,habilitado:boolean){
+    return this.http.put<any>(`${this.apiUrl}${entidad}/habilitarDeshabilitar/`,{id,habilitado});
+  }
+  login(body:any){
+    return this.http.post<Administrador>(`${this.apiUrl}auth/login`, body);
   }
 }
 

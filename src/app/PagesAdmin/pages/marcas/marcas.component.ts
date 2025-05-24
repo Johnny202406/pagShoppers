@@ -3,41 +3,49 @@ import { AbstractControl, FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { GetDataBaseService,Categoria ,Marca, Producto,Imagenes, marcas} from 'src/app/get-data-base.service';
+import { GetDataBaseService,Categoria ,Marca, Producto,Imagenes, marcas,Estados,Estado} from 'src/app/get-data-base.service';
 import { Router } from '@angular/router';
 import { TableModule,Table} from 'primeng/table';
 import { FloatLabel } from 'primeng/floatlabel';
 
 import { FileUploadModule } from 'primeng/fileupload';
-import { MessageService} from 'primeng/api';
 import { PrimeNG } from 'primeng/config';
 import { FileUpload } from 'primeng/fileupload';
 import { CommonModule } from '@angular/common';
 import { BadgeModule } from 'primeng/badge';
 import { ProgressBar } from 'primeng/progressbar';
-import { ToastModule } from 'primeng/toast';
+
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { Dialog } from 'primeng/dialog';
 import { FormControl, FormGroup, Validators,ReactiveFormsModule } from '@angular/forms';
 import { TextareaModule } from 'primeng/textarea';
+import { CheckboxModule } from 'primeng/checkbox';
+import { AlertService } from 'src/app/alert.service';
+AlertService
 
 @Component({
   selector: 'app-marcas',
-  imports: [TextareaModule,Dialog,FormsModule,SelectModule,ReactiveFormsModule,InputTextModule,ButtonModule,TableModule,FloatLabel,FileUpload, ButtonModule, BadgeModule, ProgressBar, ToastModule, CommonModule,FileUploadModule,ProgressSpinnerModule,ProgressSpinner],
+  imports: [CheckboxModule,TextareaModule,Dialog,FormsModule,SelectModule,ReactiveFormsModule,InputTextModule,ButtonModule,TableModule,FloatLabel, ButtonModule, BadgeModule, CommonModule,FileUploadModule,ProgressSpinnerModule,],
   templateUrl: './marcas.component.html',
   styleUrl: './marcas.component.css',
   standalone: true,
-  providers: [MessageService],
 })
 export class MarcasComponent {
-   constructor(private router: Router,private dbService: GetDataBaseService,private config: PrimeNG, private messageService: MessageService,) {}
+   constructor(
+    private dbService: GetDataBaseService,
+    private alertService: AlertService,
+
+  ) {}
     marcas: Marca[] = [];
     totalRecords: number = 0;
     pageSize:number=5
     currentPage: number = 1;
     @ViewChild('dt') table!: Table;
     inputValue?:string;
+
+    Estados=Estados
+    selectedEstado?:Estado
 
     ngOnInit(){
       this.loadMarcas()
@@ -61,8 +69,9 @@ loadCustomers(event: any) {
 
 
 loadMarcas() {
+  const estado = this.selectedEstado?.value ;
   const search = this.inputValue?.trim() || undefined;
-  this.dbService.obtenerMarcasEnTabla(this.currentPage, this.pageSize, search).subscribe((response)=>{
+  this.dbService.obtenerMarcasEnTabla(this.currentPage, this.pageSize, search,estado).subscribe((response)=>{
       this.marcas = response.marcas;
       this.totalRecords = response.totalRecords;
     });
@@ -124,11 +133,11 @@ miFormulario = new FormGroup({
   request.subscribe({
     next: () => {
       const mensaje = this.marcaId ? 'actualizada' : 'creada';
-      this.showMessage('success', `Marca ${mensaje}`, `La marca ha sido ${mensaje} correctamente.`);
+      this.alertService.show({severity:'success',summary: `Marca ${mensaje}`, detail:`La marca ha sido ${mensaje} correctamente.`});
     },
     error: (error) => {
       const accion = this.marcaId ? 'Actualizar' : 'Crear';
-      this.showMessage('error', `Error al ${accion} marca`, `Hubo un problema: ${error.message}`);
+      this.alertService.show({severity:'error', summary:`Error al ${accion} marca`, detail:`Hubo un problema: ${error.message}`});
     },
     complete: () => {
       this.loadMarcas()
@@ -136,12 +145,25 @@ miFormulario = new FormGroup({
     }
   });
 }
-  showMessage(severity: string, summary: string, detail: string, life: number = 3000) {
-    this.messageService.add({
-      severity: severity,
-      summary: summary,
-      detail: detail,
-      life: life
-    });
+
+
+  // HABILITAR DESHABILITAR
+  habilitarDeshabilitar(marca:Marca){
+    const nuevoEstado:boolean=!marca.habilitado
+    const txt=nuevoEstado?"Habilitado":"Deshabilitado"
+    const txt2=nuevoEstado?"Habilitar":"Deshabilitar"
+    const severity=nuevoEstado?"success":"info"
+
+    this.dbService.habilitarDeshabilitar("marcas",marca.id,!marca.habilitado).subscribe({
+      next: () => {
+        this.loadMarcas()
+      },
+      error: (error) => {
+        this.alertService.show({severity:'error', summary:`Error al ${txt2} marca`,detail: `Hubo un problema: ${error.message}`});
+      },
+      complete: () => {
+        this.alertService.show({severity, summary:`Marca: ${marca.nombre}`, detail:`La Marca ha sido ${txt} correctamente.`});
+      }
+    })
   }
 }

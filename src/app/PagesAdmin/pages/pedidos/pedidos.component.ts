@@ -7,30 +7,31 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ButtonModule } from 'primeng/button';
 import { DatePicker } from 'primeng/datepicker';
-import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { GetDataBaseService,Pedido,estado_pedidos } from 'src/app/get-data-base.service';
 import { TableModule,Table} from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { environment } from '@environnments/environment';
 import { Dialog } from 'primeng/dialog';
-import { ToastModule } from 'primeng/toast';
+import { AlertService } from 'src/app/alert.service';
 
 
 @Component({
   selector: 'app-pedidos',
-  imports: [Dialog,CommonModule,InputIconModule, IconFieldModule, InputTextModule, FloatLabelModule, FormsModule,Select,FormsModule,InputTextModule,ButtonModule,DatePicker,TableModule,ToastModule],
+  imports: [Dialog,CommonModule,InputIconModule, IconFieldModule, InputTextModule, FloatLabelModule, FormsModule,Select,FormsModule,InputTextModule,ButtonModule,DatePicker,TableModule],
   templateUrl: './pedidos.component.html',
   styleUrl: './pedidos.component.css',
   standalone:true,
-  providers: [MessageService],
   
 })
 export class PedidosComponent  implements OnInit{
 
   envs=environment
   
-  constructor(private router: Router,private dbService: GetDataBaseService,private messageService: MessageService,) {}
+  constructor(
+    private dbService: GetDataBaseService,
+    private alertService: AlertService,
+  ) {}
   
   colores:string[] = ['','#F59E0B', '#3B82F6', '#10B981', '#EF4444'];
   headers:string[]=["Id","Dni","Contacto","Fecha","Hora","Total","Estado","Detalles"]
@@ -104,16 +105,20 @@ export class PedidosComponent  implements OnInit{
   }
     
   actualizarPedido(){
-    if(!this.selectedPedidos) return this.messageService.add({ severity: 'warn', summary: 'Pedidos No seleccionados', detail: 'No hay pedidos seleccionados a los que actulizar estado' });
-    if(!this.estadoParaActualizarPedido) return this.messageService.add({ severity: 'warn', summary: 'Estado No Seleccionado', detail: 'El Estado no se encuentra seleccionado' });
+    if(!this.selectedPedidos) return this.alertService.show({ severity: 'warn', summary: 'Pedidos No seleccionados', detail: 'No hay pedidos seleccionados a los que actulizar estado' });
+    if(!this.estadoParaActualizarPedido) return this.alertService.show({ severity: 'warn', summary: 'Estado No Seleccionado', detail: 'El Estado no se encuentra seleccionado' });
     
-    const obj={
-      idestado:this.estadoParaActualizarPedido.id,
-      pedidos:this.selectedPedidos.map((pedido)=>{
-        return pedido.id
-      })
-    }
+    const idestado=this.estadoParaActualizarPedido.id
+    const obj = {
+      idestado,
+      pedidos: this.selectedPedidos
+        .filter(pedido => idestado !== pedido.estado.id) 
+        .map(pedido => pedido.id) 
+    };
+    console.log(obj);
     
+    if(!obj.pedidos.length) return this.alertService.show({ severity: 'warn', summary: 'Pedidos No seleccionados', detail: 'No hay pedidos seleccionados a los que actualizar con ese estado' });
+
     
     this.dbService.actualizarPedidos(obj).subscribe({
         next: () => {
@@ -121,13 +126,12 @@ export class PedidosComponent  implements OnInit{
           this.showDialog()
           this.selectedPedidos=[]
           this.estadoParaActualizarPedido=undefined
-          
-          return this.messageService.add({ severity: 'success', summary: 'Pedido Actualizado', detail: 'Pedido actualizado con exito' });
         },
         error: () => {
-          return this.messageService.add({ severity: 'error', summary: 'Pedido Fallido', detail: 'Pedido no actualizado' });
+          return this.alertService.show({ severity: 'error', summary: 'Pedido Fallido', detail: 'Pedido no actualizado' });
         },
         complete:()=>{
+          return this.alertService.show({ severity: 'success', summary: 'Pedido Actualizado', detail: 'Pedido actualizado con exito' });
           
         }
       })

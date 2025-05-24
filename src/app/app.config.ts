@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection, } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -8,12 +8,14 @@ import Aura from '@primeng/themes/aura';
 import { routes } from './app.routes';
 
 import { provideHttpClient } from '@angular/common/http';
+import { ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
 
-    // NG PRIME
+    // prime ng siuuuu
     provideAnimationsAsync(),
     providePrimeNG({
         theme: {
@@ -22,10 +24,10 @@ export const appConfig: ApplicationConfig = {
               darkModeSelector: false || 'none'
           }
         },
-        
-        
     }),
-    provideHttpClient()
+    provideHttpClient(),
+    ConfirmationService,
+    MessageService,
   ]
 };
 

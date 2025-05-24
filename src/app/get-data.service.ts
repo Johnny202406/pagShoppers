@@ -4,6 +4,7 @@ import { BehaviorSubject, merge, Observable, of } from 'rxjs';
 import { ActivatedRoute, Router, NavigationStart, Params, NavigationEnd } from '@angular/router';
 import { filter, switchMap, tap } from 'rxjs/operators';
 import { Producto,ProductosResponse ,marcas,GetDataBaseService } from './get-data-base.service';
+import { environment as envs } from '@environnments/environment';
 
 
 @Injectable({
@@ -11,25 +12,20 @@ import { Producto,ProductosResponse ,marcas,GetDataBaseService } from './get-dat
 })
 export class GetDataService implements OnDestroy {
 
-  private apiUrl = 'http://localhost:3000/productos/cliente';
+  private apiUrl = envs.apiUrl+'productos/cliente';
 
-  // variables de inicio y reset
   private nProductosInicio:number=50
 
-  private pagina:number=1
-  private paginacionSize:number=10
-  private orden:string|undefined=undefined
-  private filtros:any={
+
+  private paginaSubject = new BehaviorSubject<number>(1);
+  private pageSizeSubject = new BehaviorSubject<number>(10);
+  private ordenSubject = new BehaviorSubject<string|undefined>(undefined);
+  private filtrosSubject = new BehaviorSubject<any>({
     conStock: false,
     marcas: [],
     precioMin: null,
     precioMax: null,
-  }
-
-  private paginaSubject = new BehaviorSubject<number>(this.pagina);
-  private pageSizeSubject = new BehaviorSubject<number>(this.paginacionSize);
-  private ordenSubject = new BehaviorSubject<string|undefined>(this.orden);
-  private filtrosSubject = new BehaviorSubject<any>(this.filtros);
+  });
 
   pagina$ = this.paginaSubject.asObservable();
   pageSize$ = this.pageSizeSubject.asObservable();
@@ -56,35 +52,22 @@ export class GetDataService implements OnDestroy {
         switchMap(() => {
           this.resetState();
           const params = this.route.snapshot.queryParams;
-          console.log('Cargando productos con', params);
           this.syncParamsFromUrl(params);
           return this.fetchProducts();
         })
       )
       .subscribe();
 
-      // this.route.queryParams
-      // .pipe(
-      //   switchMap((params: Params) => {
-      //     console.log("VAMOS");
-          
-      //     this.resetState()
-      //     this.syncParamsFromUrl(params);
-      //     return this.fetchProducts();
-      //   })
-      // )
-      // .subscribe();
   }
 
   private syncParamsFromUrl(params: any): void {
-    const { page,/* pageSize,*/ sort, minPrice, maxPrice, onlyStock, marcas } = params;
+    const { pagina, orden, minPrecio, maxPrecio, soloConStock, marcas } = params;
 
-    if (page) this.paginaSubject.next(+page);
-    // if (pageSize) this.pageSizeSubject.next(+pageSize);
-    if (sort) this.ordenSubject.next(sort);
-    if (minPrice) this.filtrosSubject.value.precioMin = +minPrice;
-    if (maxPrice) this.filtrosSubject.value.precioMax = +maxPrice;
-    if (onlyStock) this.filtrosSubject.value.conStock = onlyStock ;
+    if (pagina) this.paginaSubject.next(+pagina);
+    if (orden) this.ordenSubject.next(orden);
+    if (minPrecio) this.filtrosSubject.value.precioMin = +minPrecio;
+    if (maxPrecio) this.filtrosSubject.value.precioMax = +maxPrecio;
+    if (soloConStock) this.filtrosSubject.value.conStock = soloConStock ;
     if (marcas) this.filtrosSubject.value.marcas = marcas.toUpperCase().split(',');
 
     this.filtrosSubject.next(this.filtrosSubject.value);
@@ -135,7 +118,7 @@ export class GetDataService implements OnDestroy {
 
 
   private resetState(): void {
-    this.paginaSubject.next(1); // ← No uses this.pagina, resetea directo
+    this.paginaSubject.next(1); 
     this.pageSizeSubject.next(10);
     this.ordenSubject.next(undefined);
     this.filtrosSubject.next({
@@ -143,7 +126,7 @@ export class GetDataService implements OnDestroy {
       marcas: [],
       precioMin: null,
       precioMax: null,
-    }); // ← Crea nuevo objeto, no reuses el de this.filtros
+    });
   
     this.productos$.next([]);
     this.marcas$.next([]);
@@ -152,31 +135,21 @@ export class GetDataService implements OnDestroy {
   
 
   setPagina(pagina: number): void {
-    // this.paginaSubject.next(pagina);
-    const queryParams: any = { page: pagina!==1?pagina:undefined };
+    const queryParams: any = { pagina: pagina!==1?pagina:undefined };
     this.updateUrl(queryParams);
   }
 
-  // setPageSize(pageSize: number): void {
-  //   this.pageSizeSubject.next(pageSize);
-  //   const queryParams: any = { pageSize: pageSize };
-  //   this.updateUrl(queryParams);
-  // }
-
   setOrden(orden: string|undefined): void {
-    // this.ordenSubject.next(orden);
-    const queryParams: any = { sort: orden };
+    const queryParams: any = { orden: orden };
     this.updateUrl(queryParams);
   }
 
   setFiltros(filtros: any): void {
-    // this.filtrosSubject.next(filtros);
-    
     const queryParams: any = {
-      page: undefined ,
-      minPrice: filtros.precioMin ?? undefined,
-      maxPrice: filtros.precioMax ?? undefined,
-      onlyStock: filtros.conStock ? true : undefined,
+      pagina: undefined ,
+      minPrecio: filtros.precioMin ?? undefined,
+      maxPrecio: filtros.precioMax ?? undefined,
+      soloConStock: filtros.conStock ? true : undefined,
       marcas: filtros.marcas?.length ? filtros.marcas.join(',').toLowerCase() : undefined
     };
   

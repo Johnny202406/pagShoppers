@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-
-
 import { CarritoComponent } from "./carrito/carrito.component";
 import { FooterComponent } from './footer/footer.component';
 import { MenuContentComponent } from './menu-content/menu-content.component';

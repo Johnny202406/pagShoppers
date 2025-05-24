@@ -7,7 +7,9 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import { MenuComponent } from "./components/menu/menu.component";
 import { DOCUMENT } from '@angular/common';
 import { environment as envs } from '@environnments/environment';
-
+import { ToastModule } from 'primeng/toast';
+import { AlertService } from '../alert.service';
+import { ConfirmService } from '../confirm.service';
 
 @Component({
   selector: 'app-view-admin',
@@ -17,8 +19,10 @@ import { environment as envs } from '@environnments/environment';
     MatButtonModule,
     MatIconModule,
     MatSidenavModule,
-    MenuComponent
-],
+    MenuComponent,
+    ToastModule,
+  ],
+  standalone: true,
   template: `
   <mat-toolbar class="">
     <button mat-icon-button (click)="collapsed.set(!collapsed())">
@@ -44,6 +48,7 @@ import { environment as envs } from '@environnments/environment';
     </mat-sidenav-content>
 
   </mat-sidenav-container>
+
 
   
   `,
@@ -77,20 +82,31 @@ import { environment as envs } from '@environnments/environment';
   `
 })
 export class ViewAdmin {
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private alertService: AlertService,
+    private confirmService: ConfirmService,
+
+  ) {}
 
   collapsed = signal(false);
 
   sidenavWidth = computed(()=>this.collapsed()?'65px':'250px');
-
-  logout(){
-    const isLogout:boolean=confirm("¿Está seguro de cerrar Sesión?");
-    if (isLogout) {
-      localStorage.removeItem(envs.tokenLogin);
-      localStorage.removeItem(envs.tokenPestaña);
-      this.router.navigate([`/${envs.urlLoginAdmin}`]);
+  position: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright' = 'top';
+  async logout(){
+    const confirmado = await this.confirmService.confirm("¿Estás seguro de cerrar sesión?")
+    if (confirmado) {
+        localStorage.removeItem(envs.tokenLogin);
+        localStorage.removeItem(envs.userInfo);
+        localStorage.removeItem(envs.tokenPestaña);
+        this.router.navigate([`/${envs.urlLoginAdmin}`]);
+        return this.alertService.show({severity:"info",summary:"Cierre de sesión",detail:"Cierre de sesión exitoso."})
+    }else{
+      this.alertService.show({severity: 'info',summary: 'Incompleto',detail: 'Proceso incompleto',life: 3000,});
     }
+    return
   }
+}
   
 
-}
+

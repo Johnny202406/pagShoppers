@@ -1,8 +1,8 @@
-DROP DATABASE papeleria;
+-- DROP DATABASE papeleria;
 
 -- Crear la base de datos si no existe
-CREATE DATABASE IF NOT EXISTS papeleria;
-USE papeleria;
+-- CREATE DATABASE IF NOT EXISTS papeleria;
+USE  bwmyees3hfaidqy5sbvz;
 
 -- Tabla de marcas
 CREATE TABLE IF NOT EXISTS marcas (
@@ -1077,4 +1077,6 @@ INSERT INTO estado_pedidos (nombre) VALUES
 
 INSERT INTO administradores (dni, nombre, apellido, username, contrasena)
 VALUES ('12345678', 'Juan', 'Pérez', 'admin', 'admin123');
+INSERT INTO administradores (dni, nombre, apellido, username, contrasena)
+VALUES ('98765432', 'María', 'Pérez', 'maria', 'maria123');
 

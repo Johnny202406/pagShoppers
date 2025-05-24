@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Producto,detalles } from './get-data-base.service';
+import { AlertService } from './alert.service';
 
 
 export interface Carrito {
@@ -16,7 +17,7 @@ export class CarritoService {
   private carritoSubject = new BehaviorSubject<Carrito[]>([]);  // Observable del carrito
   public carrito$ = this.carritoSubject.asObservable();
 
-  constructor() {
+  constructor(private alertService:AlertService) {
     const carritoGuardado = localStorage.getItem('carrito');
     if (carritoGuardado) {
       this.carritoProductos = JSON.parse(carritoGuardado);
@@ -45,6 +46,7 @@ export class CarritoService {
       this.carritoProductos[index].subtotal =subtotal ;
     } else {
       this.carritoProductos.push({ producto, cantidad,subtotal  });
+      this.alertService.show({ severity: 'success', summary: `Producto ${producto.nombre} agregado`, detail: 'Producto agregadodo al carrito de pedidos con éxito' })
     }
 
     this.guardarEnLocalStorage();

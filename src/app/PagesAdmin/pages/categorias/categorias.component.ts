@@ -3,40 +3,45 @@ import { AbstractControl, FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { GetDataBaseService,Categoria ,Marca, Producto,Imagenes, marcas} from 'src/app/get-data-base.service';
+import { GetDataBaseService,Categoria,Estado,Estados} from 'src/app/get-data-base.service';
 import { Router } from '@angular/router';
 import { TableModule,Table} from 'primeng/table';
 import { FloatLabel } from 'primeng/floatlabel';
 
 import { FileUploadModule } from 'primeng/fileupload';
-import { MessageService} from 'primeng/api';
-import { PrimeNG } from 'primeng/config';
-import { FileUpload } from 'primeng/fileupload';
 import { CommonModule } from '@angular/common';
 import { BadgeModule } from 'primeng/badge';
-import { ProgressBar } from 'primeng/progressbar';
-import { ToastModule } from 'primeng/toast';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { ProgressSpinner } from 'primeng/progressspinner';
 import { Dialog } from 'primeng/dialog';
 import { FormControl, FormGroup, Validators,ReactiveFormsModule } from '@angular/forms';
 import { TextareaModule } from 'primeng/textarea';
+import { CheckboxModule } from 'primeng/checkbox';
+import { AlertService } from 'src/app/alert.service';
+
+
 @Component({
   selector: 'app-categorias',
-  imports: [TextareaModule,Dialog,FormsModule,SelectModule,ReactiveFormsModule,InputTextModule,ButtonModule,TableModule,FloatLabel,FileUpload, ButtonModule, BadgeModule, ProgressBar, ToastModule, CommonModule,FileUploadModule,ProgressSpinnerModule,ProgressSpinner],
+  imports: [CheckboxModule,TextareaModule,Dialog,FormsModule,SelectModule,ReactiveFormsModule,InputTextModule,ButtonModule,TableModule,FloatLabel, ButtonModule, BadgeModule, CommonModule,FileUploadModule,ProgressSpinnerModule],
   templateUrl: './categorias.component.html',
   styleUrl: './categorias.component.css',
   standalone: true,
-  providers: [MessageService],
 })
 export class CategoriasComponent {
-  constructor(private router: Router,private dbService: GetDataBaseService,private config: PrimeNG, private messageService: MessageService,) {}
-    categorias: Categoria[] = [];
-    totalRecords: number = 0;
-    pageSize:number=5
-    currentPage: number = 1;
-    @ViewChild('dt') table!: Table;
-    inputValue?:string;
+  constructor(
+    private router: Router,
+    private dbService: GetDataBaseService,
+    private alertService: AlertService,
+
+  ) {}
+  categorias: Categoria[] = [];
+  totalRecords: number = 0;
+  pageSize:number=5
+  currentPage: number = 1;
+  @ViewChild('dt') table!: Table;
+  inputValue?:string;
+
+  Estados=Estados
+  selectedEstado?:Estado
 
     ngOnInit(){
       this.loadCategorias()
@@ -60,8 +65,9 @@ loadCustomers(event: any) {
 
 
 loadCategorias() {
+  const estado = this.selectedEstado?.value ;
   const search = this.inputValue?.trim() || undefined;
-  this.dbService.obtenerCategoriasEnTabla(this.currentPage, this.pageSize, search).subscribe((response)=>{
+  this.dbService.obtenerCategoriasEnTabla(this.currentPage, this.pageSize, search,estado).subscribe((response)=>{
       this.categorias = response.categorias;
       this.totalRecords = response.totalRecords;
     });
@@ -105,42 +111,56 @@ miFormulario = new FormGroup({
   }
 
   operacionesCategoria() {
-  if (this.miFormulario.invalid) {
-    this.miFormulario.markAllAsTouched();
-    return;
-  }
-
-  const formValue = this.miFormulario.value;
-
-  const payload = {
-    nombre: formValue.nombre
-  };
-
-  const request = this.categoriaId
-    ? this.dbService.actualizarCategoria(this.categoriaId, payload)
-    : this.dbService.crearCategoria(payload);
-
-  request.subscribe({
-    next: () => {
-      const mensaje = this.categoriaId ? 'actualizada' : 'creada';
-      this.showMessage('success', `Categoria ${mensaje}`, `La categoria ha sido ${mensaje} correctamente.`);
-    },
-    error: (error) => {
-      const accion = this.categoriaId ? 'Actualizar' : 'Crear';
-      this.showMessage('error', `Error al ${accion} categoria`, `Hubo un problema: ${error.message}`);
-    },
-    complete: () => {
-      this.loadCategorias()
-      this.showDialog()
+    if (this.miFormulario.invalid) {
+      this.miFormulario.markAllAsTouched();
+      return;
     }
-  });
-}
-  showMessage(severity: string, summary: string, detail: string, life: number = 3000) {
-    this.messageService.add({
-      severity: severity,
-      summary: summary,
-      detail: detail,
-      life: life
+
+    const formValue = this.miFormulario.value;
+
+    const payload = {
+      nombre: formValue.nombre
+    };
+
+    const request = this.categoriaId
+      ? this.dbService.actualizarCategoria(this.categoriaId, payload)
+      : this.dbService.crearCategoria(payload);
+
+    request.subscribe({
+      next: () => {
+        const mensaje = this.categoriaId ? 'actualizada' : 'creada';
+        this.alertService.show({severity:'success', summary:`Categoria ${mensaje}`, detail:`La categoria ha sido ${mensaje} correctamente.`});
+      },
+      error: (error) => {
+        const accion = this.categoriaId ? 'Actualizar' : 'Crear';
+        this.alertService.show({severity:'error', summary:`Error al ${accion} categoria`,detail: `Hubo un problema: ${error.message}`});
+      },
+      complete: () => {
+        this.loadCategorias()
+        this.showDialog()
+      }
     });
+  }
+ 
+
+  // HABILITAR DESHABILITAR
+  habilitarDeshabilitar(categoria:Categoria){
+    const nuevoEstado:boolean=!categoria.habilitado
+    const txt=nuevoEstado?"Habilitado":"Deshabilitado"
+    const txt2=nuevoEstado?"Habilitar":"Deshabilitar"
+    const severity=nuevoEstado?"success":"info"
+    
+    this.dbService.habilitarDeshabilitar("categorias",categoria.id,nuevoEstado).subscribe({
+      next: () => {
+        this.loadCategorias()
+      },
+      error: (error) => {
+        this.alertService.show({severity, summary:`Error al ${txt2} categoria`, detail:`Hubo un problema: ${error.message}`});
+      },
+      complete: () => {
+         
+        this.alertService.show({severity, summary:`Categoria: ${categoria.nombre}`, detail:`La Categoria ha sido ${txt} correctamente.`});
+      }
+    })
   }
 }

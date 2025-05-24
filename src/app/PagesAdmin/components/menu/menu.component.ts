@@ -2,6 +2,8 @@ import { Component, computed, Input, signal } from '@angular/core';
 import {MatListModule} from '@angular/material/list'
 import {MatIconModule} from '@angular/material/icon'
 import { RouterLink,RouterLinkActive } from '@angular/router';
+import { environment as envs } from '@environnments/environment';
+import { Administrador } from 'src/app/get-data-base.service';
 
 export type MenuItem={
   icon:string;
@@ -17,7 +19,8 @@ export type MenuItem={
   <div class="sidenav-header">
     <!-- <img src="LOGO_SHOPPERS_2024-removebg.png" alt="" class="mx-auto" [width]="profilePicSize()"> -->
     <div class="header-text" [class.hide-header-text]="sideNavCollpsed()">
-      <h2>NameAdmin</h2>
+      <h2>{{userInfo?.nombre}}</h2>
+      <h2>{{userInfo?.apellido}}</h2>
       <p>Administrador</p>
     </div>
   </div>
@@ -109,4 +112,9 @@ export class MenuComponent {
   profilePicSize = computed(()=>
     this.sideNavCollpsed()?'32':'100'
   );
+  userInfo?:Administrador
+  
+  ngOnInit(){
+    this.userInfo=JSON.parse(localStorage.getItem(envs.userInfo)||'[]')
+  }
 }

@@ -6,18 +6,17 @@ import { ButtonsCardComponent } from '../../buttons-card/buttons-card.component'
 import { GetDataBaseService } from 'src/app/get-data-base.service';
 import { Subscription } from 'rxjs';
 
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { ConfirmDialog } from 'primeng/confirmdialog';
-import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
+import { AlertService } from 'src/app/alert.service';
+import { ConfirmService } from 'src/app/confirm.service';
+
 
 @Component({
   selector: 'app-cards-carrito',
   templateUrl: './cards-carrito.component.html',
   styleUrls: ['./cards-carrito.component.css'],
-  imports: [ButtonsCardComponent, CommonModule, RouterLink,ConfirmDialog,ToastModule,ButtonModule],
+  imports: [ButtonsCardComponent, CommonModule, RouterLink,ButtonModule],
   standalone: true,
-  providers: [ConfirmationService, MessageService],
 
 })
 export class CardsCarritoComponent implements OnInit, OnDestroy {
@@ -29,7 +28,8 @@ export class CardsCarritoComponent implements OnInit, OnDestroy {
   constructor(
     private carritoService: CarritoService,
     private dbService: GetDataBaseService,
-    private confirmationService: ConfirmationService, private messageService: MessageService
+    private alertService: AlertService,
+    private confirmService: ConfirmService,
   ) {}
 
   ngOnInit(): void {
@@ -52,53 +52,30 @@ export class CardsCarritoComponent implements OnInit, OnDestroy {
     if (this.item) {
       this.carritoService.añadirAlCarrito(this.item.producto, event);
     }
+    return
   }
 
-  removeToCart(): void {
+  async removeToCart(){
     if (this.item ) {
-      
-      this.confirmComponent(`¿Está seguro de eliminar el producto\n ${this.item.producto.nombre}?`,"Confirmación",()=>{
-          this.messageService.add({ severity: 'info', summary: 'Producto retirado con éxito.', detail: 'Producto del carrito limpiado con éxito',life: 1000 });
-          setTimeout(()=>{
-            this.carritoService.eliminarDelCarrito(this.item.producto.id)
-          },1000)
-          
-        },
-        this.procesoIncompleto)
+      const confirmado = await this.confirmService.confirm(`¿Está seguro de remover el producto\n ${this.item.producto.nombre}?`)
+      if (confirmado) {
+        this.carritoService.eliminarDelCarrito(this.item.producto.id)
+        this.alertService.show({ severity: 'info', summary: 'Producto retirado con éxito.', detail: 'Producto del carrito limpiado con éxito' });
+        
+      }else{
+        this.alertService.show({severity: 'info',summary: 'Incompleto',detail: 'Proceso incompleto'});
+      }
       return
     }
-    return
+    return this.alertService.show({severity: 'warn',summary: 'No existe',detail: 'No existe el producto.'});
   }
 
   getSlug(url: string): string {
     return this.dbService.urlBonita(url);
   }
 
-  // CONFIRM DE PRIMENG
-  position: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright' = 'top';
-  confirmComponent(message:string,header:string,accept:Function,reject:Function,){
-    this.confirmationService.confirm({
-            message,
-            header,
-            icon: 'pi pi-info-circle',
-            rejectButtonStyleClass: 'p-button-text',
-            rejectButtonProps: {
-                label: 'Cancelar',
-                severity: 'secondary',
-                text: true,
-            },
-            acceptButtonProps: {
-                label: 'Confirmar',
-                text: true,
-            },
-            accept,
-            reject,
-            key: 'positionDialog',
-    });
-  }
+
   
-  procesoIncompleto=()=>{
-    return this.messageService.add({severity: 'error',summary: 'Incompleto',detail: 'Proceso incompleto',life: 3000});
-  }
+ 
 
 }

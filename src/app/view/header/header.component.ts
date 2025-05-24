@@ -6,8 +6,6 @@ import { environment } from '@environnments/environment';
 import { CarritoService } from 'src/app/cart.service';
 
 
-
-
 @Component({
   imports: [IconCartComponent, InputSearchComponent, SelectCategorieComponent],
   selector: 'app-header',
@@ -21,6 +19,7 @@ export class HeaderComponent {
   //  boton para abrir carrito 
   @Output() openCart = new EventEmitter<void>();
   @Output() openMenu = new EventEmitter<void>();
+  
   openModal(){
     this.openCart.emit()
   }

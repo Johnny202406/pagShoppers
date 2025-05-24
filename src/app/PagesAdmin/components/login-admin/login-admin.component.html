@@ -17,14 +17,14 @@
                     <div>
                         <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Contraseña</label>
                         <div class="relative flex">
-                            <input formControlName="password" type="{{password?'text':'password'}}" name="password" id="password" placeholder="••••••••" class="block w-full p-2.5 pr-10 text-sm font-bold  rounded-lg bg-white text-gray-900  focus:border-rojo-hover border-2 outline-none placeholder:text-gray-400 placeholder:font-extralight" required>
+                            <input formControlName="contrasena" type="{{contrasenaView?'text':'password'}}" name="password" id="password" placeholder="••••••••" class="block w-full p-2.5 pr-10 text-sm font-bold  rounded-lg bg-white text-gray-900  focus:border-rojo-hover border-2 outline-none placeholder:text-gray-400 placeholder:font-extralight" required>
                             <div (click)="changeVisibility()" class="absolute w-10 h-full right-0 cursor-pointer rounded-r-lg grid place-content-center">
-                                <i class="  pi {{password?'pi-eye':'pi-eye-slash'}} text-rojo  "></i>
+                                <i class="  pi {{contrasenaView?'pi-eye':'pi-eye-slash'}} text-rojo  "></i>
                             </div>
                         </div>
 
                     </div>
-                    <button type="submit" class="w-full text-white bg-rojo hover:bg-rojo-hover font-medium rounded-lg text-sm px-5 py-2.5 text-center">Ingresar</button>
+                    <button [disabled]="this.miFormulario.invalid" type="submit" class="w-full text-white bg-rojo hover:bg-rojo-hover font-medium rounded-lg text-sm px-5 py-2.5 text-center">Ingresar</button>
                     <p class="text-xs font-extralight text-rojo cursor-pointer" (click)="cleanLSP()">
                         Limpiar LSP.
                     </p>

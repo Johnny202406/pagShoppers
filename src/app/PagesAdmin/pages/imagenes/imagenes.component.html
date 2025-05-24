@@ -1,52 +1,79 @@
 <div class=" overflow-x-auto h-full  w-full flex flex-nowrap gap-2 ">
   <div class=" shadow-md sm:rounded-lg max-w-2xl flex-none">
-      
+
       <div class="flex items-center justify-between  w-full flex-wrap  py-4 bg-white px-2 gap-2">
           <p-button label="Agregar " (onClick)="showDialog()"/>
-          <p-select 
-          [options]="categorias" 
-          [(ngModel)]="selectedCategory" 
-          optionLabel="nombre" 
-          [filter]="true" 
-          filterBy="nombre" 
-          [showClear]="true" 
-          placeholder="Selecciona una categoría" 
-          class="w-64">
+          <p-floatlabel class="w-64" variant="on">
+            <p-select 
+            [options]="categorias" 
+            [(ngModel)]="selectedCategory" 
+            optionLabel="nombre" 
+            [filter]="true" 
+            filterBy="nombre" 
+            [showClear]="true" 
+            class="w-64">
 
-          <ng-template #selectedItem let-selectedOption>
-              <div class="flex items-center gap-2 ">
-                  <div class="truncate">{{ selectedOption.nombre }}</div>
-              </div>
-          </ng-template>
+            <ng-template #selectedItem let-selectedOption>
+                <div class="flex items-center gap-2 ">
+                    <div class="truncate">{{ selectedOption.nombre }}</div>
+                </div>
+            </ng-template>
 
-          <ng-template let-category #item>
-              <div class="flex items-center gap-2">
-                  <div>{{ category.nombre }}</div>
-              </div>
-          </ng-template>
-          </p-select>
-          <p-select 
-          [options]="marcas" 
-          [(ngModel)]="selectedMarca" 
-          optionLabel="nombre" 
-          [filter]="true" 
-          filterBy="nombre" 
-          [showClear]="true" 
-          placeholder="Selecciona una marca" 
-          class="w-64" >
+            <ng-template let-category #item>
+                <div class="flex items-center gap-2">
+                    <div>{{ category.nombre }}</div>
+                </div>
+            </ng-template>
+            </p-select>
+            <label for="on_label">Categoría</label>
+          </p-floatlabel>
+          <p-floatlabel class="w-64" variant="on">
+            <p-select 
+            [options]="marcas" 
+            [(ngModel)]="selectedMarca" 
+            optionLabel="nombre" 
+            [filter]="true" 
+            filterBy="nombre" 
+            [showClear]="true" 
+            class="w-64" >
 
-          <ng-template #selectedItem let-selectedOption>
-              <div class="flex items-center gap-2 ">
-                  <div class="truncate">{{ selectedOption.nombre }}</div>
-              </div>
-          </ng-template>
+            <ng-template #selectedItem let-selectedOption>
+                <div class="flex items-center gap-2 ">
+                    <div class="truncate">{{ selectedOption.nombre }}</div>
+                </div>
+            </ng-template>
 
-          <ng-template let-category #item>
-              <div class="flex items-center gap-2">
-                  <div>{{ category.nombre }}</div>
-              </div>
-          </ng-template>
-          </p-select>
+            <ng-template let-category #item>
+                <div class="flex items-center gap-2">
+                    <div>{{ category.nombre }}</div>
+                </div>
+            </ng-template>
+            </p-select>
+            <label for="on_label">Marca</label>
+          </p-floatlabel>
+          <p-floatlabel class="w-64" variant="on">
+            <p-select 
+            [options]="Estados" 
+            [(ngModel)]="selectedEstado" 
+            optionLabel="label"   
+            [showClear]="true" 
+            class="w-64" >
+
+            <ng-template #selectedItem let-selectedEstado>
+                <div class="flex items-center gap-2">
+                    <div class="truncate">{{ selectedEstado.label }}</div>
+                </div>
+            </ng-template>
+
+            <ng-template let-estado #item>
+                <div class="flex items-center gap-2">
+                    <div>{{ estado.label }}</div>
+                </div>
+            </ng-template>
+            </p-select>
+            <label for="on_label" >Estado</label>
+          </p-floatlabel>
+          
           <p-floatlabel variant="on">
             <input pInputText id="on_label" [(ngModel)]="inputValue" classs="w-64" autocomplete="off" />
             <label for="on_label">Busqueda por codigo o nombre</label>
@@ -75,6 +102,9 @@
         <th  style="width:60%">
           Nombre 
         </th>
+        <th  style="width:5%">
+          Habilitado 
+        </th>
         <th style="width:5%">
           Editar
         </th>
@@ -88,6 +118,9 @@
       <tr>
         <td>{{ product.codigo }}</td>
         <td>{{ product.nombre }}</td>
+        <td>
+          <p-checkbox [ngModel]="product.habilitado" [binary]="true" (onChange)="habilitarDeshabilitar(product)" />
+        </td>
         <td>
           <div class="text-rojo cursor-pointer flex justify-center" (click)="editProduct(product)">
             <i class="pi pi-file-edit" style="font-size:1.25rem;font-weight:bolder;"></i>
@@ -116,9 +149,7 @@
         <p-progress-spinner ariaLabel="loading" />
       </div>
     }
-    
 
-    <p-toast  />
     @if (productoRefer) {
     <p-fileupload #fileUploader name="myfile[]" url="https://www.primefaces.org/cdn/api/upload.php" [multiple]="true" accept="image/*" [maxFileSize]="maxFileSize"  (onSelect)="onSelectedFiles($event)">
         <ng-template #header let-files let-uploadedFiles="uploadedFiles" let-chooseCallback="chooseCallback" let-clearCallback="clearCallback" let-uploadCallback="uploadCallback">
@@ -227,7 +258,7 @@
     </div>
     <small *ngIf="miFormulario.get('stock')?.invalid && miFormulario.get('stock')?.touched" class="text-red-500">
         El stock es obligatorio y debe ser un número positivo.
-      </small>
+    </small>
 
     <!-- Detalle -->
     <div class="flex  items-center gap-4 mb-4">
@@ -237,21 +268,21 @@
     </div>
     <small *ngIf="miFormulario.get('detalle')?.invalid && miFormulario.get('detalle')?.touched" class="text-red-500">
         El detalle puede tener un máximo de 500 caracteres.
-      </small>
+    </small>
 
-    <!-- Marca -->
-    <div class="flex flex-col gap-4 mb-4">
-      <label for="marca" class="font-semibold w-24 text-nowrap">Marca</label>
-      <p-select [options]="marcasParaFormulario" id="marca" [checkmark]="true" [filter]="true" 
-          filterBy="nombre"  optionLabel="nombre" [showClear]="true" placeholder="Selecciona" class="w-full md:w-48" formControlName="marca" />
-    
-    </div>
 
     <!-- Categoria -->
     <div class="flex flex-col gap-4 mb-4">
       <label for="categoria" class="font-semibold w-24 text-nowrap">Categoria</label>
       <p-select [options]="categoriasParaFormulario" id="categoria" [checkmark]="true" [filter]="true" 
           filterBy="nombre"  optionLabel="nombre" [showClear]="true" placeholder="Selecciona" class="w-full md:w-48" formControlName="categoria" />
+    
+    </div>
+     <!-- Marca -->
+    <div class="flex flex-col gap-4 mb-4">
+      <label for="marca" class="font-semibold w-24 text-nowrap">Marca</label>
+      <p-select [options]="marcasParaFormulario" id="marca" [checkmark]="true" [filter]="true" 
+          filterBy="nombre"  optionLabel="nombre" [showClear]="true" placeholder="Selecciona" class="w-full md:w-48" formControlName="marca" />
     
     </div>
 
