@@ -88,5 +88,24 @@ export class CarritoService {
       }
     })
   }
+
+  generarMensajeWhatsApp(): string {
+    const carrito= this.obtenerCarrito()
+    if (!carrito.length) return "El carrito está vacío.";
+
+    let mensaje = "Hola Shoppers, quiero realizar un pedido:%0A";
+    let total = 0;
+
+    carrito.forEach((item) => {
+      mensaje += `- ${item.producto.nombre} x${item.cantidad} = S/ ${item.subtotal.toFixed(2)}%0A`;
+      total += item.subtotal;
+    });
+
+    mensaje += `%0ATotal: S/ ${total.toFixed(2)}`;
+    return mensaje;
+  }
+
+
+  
   
 }

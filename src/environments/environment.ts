@@ -11,6 +11,8 @@ export const environment = {
     
     urlLoginAdmin:"loginAdmin",
     urlViewAdmin:"viewAdmin",
-    apiUrl:"https://backpapel-production.up.railway.app/"
+    apiUrl:"https://backpapel-production.up.railway.app/",
+
+    urlWhatsApp:`https://api.whatsapp.com/send?phone=51970960404`,
   };
   

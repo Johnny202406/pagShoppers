@@ -27,7 +27,7 @@
           </span>
           <div class="flex mt-4  sm:mt-0 items-center text-white">
             @for (item of socialMedia; track item) {            
-                <a href="https://angular.dev/" target="_blank" rel="noopener noreferrer" class="px-2 bg-transparent " >
+                <a [href]="item.link" target="_blank" rel="noopener noreferrer" class="px-2 bg-transparent " >
                     <i class=" pi-{{item.icon}} pi text-xl" ></i>
                 </a>  
                 

@@ -50,9 +50,15 @@
           <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
             <p class="flex">
               o
-              <button id="whatsapp" class="flex items-center font-medium ml-2 text-rojo hover:text-rojo-hover" [disabled]="productosEnCarrito.length===0" >
-                Enviar por WhatsApp
-                <i class="pi pi-arrow-right ml-2"></i>
+              <button id="whatsapp" class="flex items-center font-medium ml-2 text-rojo hover:text-rojo-hover" [disabled]="productosEnCarrito.length===0">
+                @if (productosEnCarrito.length>0) {
+                <a 
+                [href]="envs.urlWhatsApp+'&text='+mensajeWhatsApp()" 
+                target="_blank" rel="noopener noreferrer" class="no-underline  flex gap-1 items-center"  >
+                  Enviar por WhatsApp
+                  <i class="pi pi-arrow-right ml-2"></i>
+                </a>
+                }
               </button>
             </p>
           </div>

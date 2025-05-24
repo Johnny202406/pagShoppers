@@ -10,6 +10,8 @@ import { pedido,GetDataBaseService } from 'src/app/get-data-base.service';
 import { ButtonModule } from 'primeng/button';
 import { AlertService } from 'src/app/alert.service';
 import { ConfirmService } from 'src/app/confirm.service';
+import { environment } from '@environnments/environment';
+
 
 
 @Component({
@@ -20,6 +22,7 @@ import { ConfirmService } from 'src/app/confirm.service';
   standalone: true,
 })
 export class CarritoComponent implements OnInit {
+  envs=environment
   visible:boolean = false;
 
   constructor(
@@ -116,7 +119,9 @@ export class CarritoComponent implements OnInit {
     }
   }
 
-  
+  mensajeWhatsApp():string{
+    return this.carritoService.generarMensajeWhatsApp()
+  }
 
   
   
