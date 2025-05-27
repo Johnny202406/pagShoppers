@@ -45,8 +45,8 @@ export class GetDataService implements OnDestroy {
     private dbService:GetDataBaseService
   ) {
     merge(
-      of(null), // 🔹 Se ejecuta en la carga inicial
-      this.router.events.pipe(filter(event => event instanceof NavigationEnd)) // 🔹 Luego en cada navegación
+      of(null), 
+      this.router.events.pipe(filter(event => event instanceof NavigationEnd)) 
     )
       .pipe(
         switchMap(() => {

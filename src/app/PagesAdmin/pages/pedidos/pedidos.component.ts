@@ -78,10 +78,8 @@ export class PedidosComponent  implements OnInit{
    
    
   loadPedidos() {
-    console.log("FUNCk");
-
-    const fecha = this.date ? this.date.toISOString().split('T')[0] : undefined;  // 'null' en lugar de undefined
-    const estadoId = this.selectedEstado ? this.selectedEstado.id : undefined;  // 'null' en lugar de undefined
+    const fecha = this.date ? this.date.toISOString().split('T')[0] : undefined;  
+    const estadoId = this.selectedEstado ? this.selectedEstado.id : undefined;  
 
     this.dbService.getPedidos(this.currentPage, this.pageSize, fecha, estadoId, this.value).subscribe((response) => {
       this.pedidos = response.pedidos;
@@ -89,7 +87,7 @@ export class PedidosComponent  implements OnInit{
     });
   }
 
-    pedidoRefer?:Pedido
+  pedidoRefer?:Pedido
    verDetalles(pedido:Pedido){
     return this.pedidoRefer=pedido
    }
