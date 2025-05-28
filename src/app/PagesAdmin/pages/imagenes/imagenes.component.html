@@ -259,18 +259,6 @@
     <small *ngIf="miFormulario.get('stock')?.invalid && miFormulario.get('stock')?.touched" class="text-red-500">
         El stock es obligatorio y debe ser un número positivo.
     </small>
-
-    <!-- Detalle -->
-    <div class="flex  items-center gap-4 mb-4">
-      <label for="detalle" class="font-semibold w-24">Detalle</label>
-      <textarea pTextarea pSize="large" id="detalle" formControlName="detalle" rows="3"></textarea>
-      
-    </div>
-    <small *ngIf="miFormulario.get('detalle')?.invalid && miFormulario.get('detalle')?.touched" class="text-red-500">
-        El detalle puede tener un máximo de 500 caracteres.
-    </small>
-
-
     <!-- Categoria -->
     <div class="flex flex-col gap-4 mb-4">
       <label for="categoria" class="font-semibold w-24 text-nowrap">Categoria</label>
@@ -285,6 +273,19 @@
           filterBy="nombre"  optionLabel="nombre" [showClear]="true" placeholder="Selecciona" class="w-full md:w-48" formControlName="marca" />
     
     </div>
+
+    <!-- Detalle -->
+    <div class="flex  items-center gap-4 mb-4">
+      <label for="detalle" class="font-semibold w-24">Detalle</label>
+      <textarea pTextarea pSize="large" id="detalle" formControlName="detalle" rows="3"></textarea>
+      
+    </div>
+    <small *ngIf="miFormulario.get('detalle')?.invalid && miFormulario.get('detalle')?.touched" class="text-red-500">
+        El detalle puede tener un máximo de 500 caracteres.
+    </small>
+
+
+    
 
     <!-- Botones -->
     <div class="flex justify-end gap-2  bottom-4 right-4">
